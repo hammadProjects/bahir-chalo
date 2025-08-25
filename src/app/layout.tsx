@@ -1,5 +1,5 @@
 "use client";
-import type { Metadata } from "next";
+// import type { Metadata } from "next";
 import "./globals.css";
 import Header from "@/components/core/Header";
 import Footer from "@/components/core/Footer";

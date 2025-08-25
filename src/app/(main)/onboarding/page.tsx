@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { GraduationCap, Users } from "lucide-react";
+import Link from "next/link";
 import React from "react";
 
 const OnboardingPage = () => {
@@ -12,6 +13,7 @@ const OnboardingPage = () => {
       description:
         "Discover courses, find scholarships, and get guidance for your study abroad journey.",
       buttonText: "Continue as Student",
+      url: "/onboarding/student",
     },
     {
       id: "consultant",
@@ -20,6 +22,7 @@ const OnboardingPage = () => {
       description:
         "Create your profile, offer one-on-one sessions, and guide students with your expertise.",
       buttonText: "Continue as Consultant",
+      url: "/onboarding/consultant",
     },
   ];
   return (
@@ -33,7 +36,7 @@ const OnboardingPage = () => {
         </div>
 
         <div className="flex justify-center gap-8">
-          {roles.map(({ icon, buttonText, description, id, title }, index) => (
+          {roles.map(({ icon, buttonText, description, id, title, url }) => (
             <Card
               key={id}
               className="max-w-sm bg-muted/5 border-emerald-600/20 cursor-pointer hover:border-emerald-600/60 transition-colors"
@@ -47,7 +50,7 @@ const OnboardingPage = () => {
                   {description}
                 </p>
                 <Button className="w-full bg-emerald-600/80 hover:bg-emerald-600/90 text-white">
-                  {buttonText}
+                  <Link href={url}>{buttonText}</Link>
                 </Button>
               </CardContent>
             </Card>

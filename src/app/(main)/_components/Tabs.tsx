@@ -1,4 +1,4 @@
-import { AppWindowIcon, CodeIcon } from "lucide-react";
+// import { AppWindowIcon, CodeIcon } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -15,11 +15,10 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { dates } from "@/lib/data";
 
 export function TabsDemo() {
-  console.log(new Date(Date.now()));
   return (
     <div className="flex w-full max-w-sm flex-col gap-6">
-      <Tabs defaultValue={dates[0]}>
-        <TabsList>
+      <Tabs className="" defaultValue={dates[0]}>
+        <TabsList className="w-full">
           {dates.map((date) => (
             <TabsTrigger key={date} value={date}>
               {date}

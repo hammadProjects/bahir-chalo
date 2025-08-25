@@ -1,3 +1,4 @@
+import BackButton from "@/components/common/BackButton";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -13,7 +14,10 @@ const AuthLayout: React.FC<Props> = ({ children }) => {
           <Image src={"/images/Logo.png"} alt="Logo" width={80} height={80} />
         </Link>
       </div>
-      <main className="flex justify-center w-full h-full">{children}</main>
+      <main className="flex flex-col items-center justify-center w-full h-full">
+        {children}
+        <BackButton title="Back to Home" style="mt-4" />
+      </main>
     </section>
   );
 };

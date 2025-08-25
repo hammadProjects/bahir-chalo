@@ -1,31 +1,22 @@
 "use client";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import {
-  ArrowLeft,
-  Clock,
-  FileText,
-  Medal,
-  ChevronDown,
-  ChevronUp,
-} from "lucide-react";
-import Image from "next/image";
-import Link from "next/link";
+import { Clock, FileText, Medal, ChevronDown, ChevronUp } from "lucide-react";
 import React, { useState } from "react";
 import { TabsDemo } from "../../_components/Tabs";
+import BackButton from "@/components/common/BackButton";
 
 const ConsultantProfile = () => {
   const [show, setShow] = useState(false);
   return (
     <section className="min-h-screen py-20 max-w-5xl mx-auto">
       <div>
-        <Button className="mb-8" size={"sm"} variant={"outline"}>
-          <Link href={"/consultants"} className="flex gap-1 items-center">
-            <ArrowLeft /> Back to Consultants
-          </Link>
-        </Button>
+        <BackButton
+          title="Back to Consultants"
+          style="mb-8"
+          url="/consultants"
+        />
         <h1 className="text-4xl font-bold mb-4">Muhammad Hammad</h1>
       </div>
       <div className="grid grid-cols-3 gap-8">

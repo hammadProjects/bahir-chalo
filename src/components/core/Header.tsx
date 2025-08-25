@@ -12,6 +12,9 @@ const Header = () => {
           </Link>
         </div>
         <Button variant={"link"} className=" hover:text-emerald-700/80" asChild>
+          <Link href={"#pricing"}>Pricing</Link>
+        </Button>
+        <Button variant={"link"} className=" hover:text-emerald-700/80" asChild>
           <Link href={"/sign-up"}>Sign Up</Link>
         </Button>
       </div>

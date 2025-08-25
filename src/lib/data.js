@@ -36,4 +36,35 @@ export const dates = [0, 1, 2, 3].map((offset) => {
   });
 });
 
-console.log(dates);
+export const plans = [
+  {
+    title: "Free",
+    price: 0,
+    description:
+      "Basic access to explore opportunities and connect with consultants.",
+    features: ["Limited access", "Basic consultation booking"],
+  },
+  {
+    title: "Standard",
+    price: 250,
+    description:
+      "A budget-friendly plan to access the platform’s basic features.",
+    features: [
+      "Access to platform",
+      "Basic profile setup",
+      "Application tracking",
+    ],
+  },
+  {
+    title: "Premium",
+    price: 450,
+    description:
+      "A complete plan with advanced features for serious applicants.",
+
+    features: [
+      "Everything in Standard",
+      "Priority support",
+      "Extended application insights",
+    ],
+  },
+];
