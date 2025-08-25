@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 
-const ForgetPasswordPage = () => {
+const VerifyOtpPage = () => {
   const [otp, setOtp] = useState("");
   return (
     <AuthPage
@@ -23,9 +23,11 @@ const ForgetPasswordPage = () => {
           max={6}
         />
       </div>
-      <Button className="w-full mt-4">Verify Code</Button>
+      <Button className="w-full mt-4 bg-emerald-400 hover:bg-emerald-400/90 text-white">
+        Verify Code
+      </Button>
     </AuthPage>
   );
 };
 
-export default ForgetPasswordPage;
+export default VerifyOtpPage;

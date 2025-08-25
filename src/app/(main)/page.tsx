@@ -1,7 +1,7 @@
 import BgGradient from "@/components/common/BgGradient";
 import { Button } from "@/components/ui/button";
 import { steps } from "@/lib/data";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, MoveRight } from "lucide-react";
 import Link from "next/link";
 
 export default function Home() {
@@ -27,13 +27,15 @@ export default function Home() {
         </p>
         <div className="space-x-4">
           <Button className="bg-linear-to-r from-emerald-400 to-teal-600 hover:from-teal-600 hover:to-emerald-400 hover:scale-110 text-lg !px-6 py-6 rounded-full transition-all duration-300">
-            Get Started <ArrowRight />
+            <Link className="flex items-center gap-1" href={"/onboarding"}>
+              Get Started <ArrowRight />
+            </Link>
           </Button>
           <Button
             className="bg-muted/60 border-none px-6 py-6 text-lg rounded-full hover:scale-110 transition-all duration-300"
             variant={"outline"}
           >
-            Find consultants
+            <Link href={"/consultants"}>Find Consultants</Link>
           </Button>
         </div>
       </section>
@@ -67,9 +69,9 @@ export default function Home() {
               <h4 className="font-semibold text-xl mb-1">{title}</h4>
               <p className="text-sm text-muted-foreground">{description}</p>
               {index < 2 && (
-                <ArrowRight
+                <MoveRight
                   size={20}
-                  className="hidden lg:block absolute -right-4 top-5/12 text-emerald-400/80"
+                  className="hidden lg:block absolute -right-3 top-5/12 text-emerald-400/80"
                 />
               )}
             </div>
@@ -89,7 +91,7 @@ export default function Home() {
           className="mt-6 text-white bg-linear-to-r from-emerald-400 to-teal-600 hover:from-teal-600 hover:to-emerald-400 transition-all"
           variant={"link"}
         >
-          <Link className="group flex items-center px-3" href={"/"}>
+          <Link className="group flex items-center px-3" href={"/onboarding"}>
             <span className="mr-1 group-hover:mr-2 transition-margin duration-200">
               Get Started
             </span>

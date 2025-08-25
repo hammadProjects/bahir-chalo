@@ -26,3 +26,14 @@ export const steps = [
     icon: <Handshake className="w-10 h-10" />,
   },
 ];
+
+export const dates = [0, 1, 2, 3].map((offset) => {
+  const d = new Date();
+  d.setDate(d.getDate() + offset);
+  return d.toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+  });
+});
+
+console.log(dates);

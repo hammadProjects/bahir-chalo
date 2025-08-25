@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Calendar, Star } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 
 const ConsultantCard = () => {
@@ -22,7 +23,7 @@ const ConsultantCard = () => {
           <div className="flex justify-between mb-2">
             <h2 className="text-lg font-semibold">Muhammad Hammad</h2>
             <Badge
-              className="border-emerald-400/30 bg-emerald-400 hover:bg-emerald-400/90 text-white"
+              className="border-emerald-400/30 bg-teal-400/10 text-emerald-400 font-medium"
               variant={"outline"}
             >
               <Star />
@@ -37,7 +38,12 @@ const ConsultantCard = () => {
             Specialization: Scholarships • Visa Guidance • SOP Review
           </p>
           <Button className="w-full bg-emerald-400 hover:bg-emerald-400/90 text-white">
-            <Calendar /> View Profile & Book
+            <Link
+              className="flex items-center justify-center gap-1 "
+              href={"/consultants/1"}
+            >
+              <Calendar /> View Profile & Book
+            </Link>
           </Button>
         </div>
       </CardContent>

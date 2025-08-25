@@ -23,12 +23,14 @@ const ForgetPasswordPage = () => {
           onChange={(e) => setEmail(e.target.value)}
         />
       </div>
-      <div className="mt-4 underline-offset-4 hover:underline">
+      <div className="mt-4 underline-offset-4 hover:underline hover:text-emerald-600/90">
         <Link className="flex items-center gap-1 text-sm" href={"/sign-in"}>
           <ArrowLeftIcon size={14} /> Back to sign in
         </Link>
       </div>
-      <Button className="w-full mt-2">Send Reset Link</Button>
+      <Button className="w-full mt-2 bg-emerald-400 hover:bg-emerald-400/90 text-white">
+        Send Reset Link
+      </Button>
     </AuthPage>
   );
 };

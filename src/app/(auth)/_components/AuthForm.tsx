@@ -66,7 +66,7 @@ const AuthForm: React.FC<Props> = ({ type }) => {
                   {type === "sign-in" && (
                     <Link
                       href="/forget-password"
-                      className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
+                      className="ml-auto inline-block text-sm underline-offset-4 hover:underline hover:text-emerald-600/90"
                     >
                       Forgot your password?
                     </Link>
@@ -80,7 +80,10 @@ const AuthForm: React.FC<Props> = ({ type }) => {
             )}
           />
 
-          <Button className="w-full" type="submit">
+          <Button
+            className="w-full bg-emerald-400 hover:bg-emerald-600/90 text-white"
+            type="submit"
+          >
             {type === "sign-in" ? "Sign In" : "Sign Up"}
           </Button>
         </form>
@@ -90,7 +93,7 @@ const AuthForm: React.FC<Props> = ({ type }) => {
           ? "Dont have an account? "
           : "Already have an account? "}
         <Link href={type === "sign-in" ? "/sign-up" : "/sign-in"}>
-          <span className="underline-offset-4 hover:underline">
+          <span className="underline-offset-4 hover:underline hover:text-emerald-600/90">
             {type === "sign-in" ? "Sign Up" : "Sign In"}
           </span>
         </Link>
