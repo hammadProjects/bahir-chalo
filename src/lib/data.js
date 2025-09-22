@@ -4,6 +4,7 @@ export const publicRoutes = [
   "/sign-up",
   "/sign-in",
   "/forget-password",
+  "/reset-password/*",
   "/verify-otp",
 ];
 
@@ -68,3 +69,9 @@ export const plans = [
     ],
   },
 ];
+
+export const allowedRoutes = {
+  admin: ["/admin"],
+  consultant: ["/consultant"],
+  student: ["/consultants/", "/student"],
+};

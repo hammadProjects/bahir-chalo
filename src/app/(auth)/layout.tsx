@@ -11,7 +11,13 @@ const AuthLayout: React.FC<Props> = ({ children }) => {
     <section className="flex flex-col items-center justify-center min-h-screen -mt-10">
       <div className="w-20 h-20">
         <Link href={"/"}>
-          <Image src={"/images/Logo.png"} alt="Logo" width={80} height={80} />
+          <Image
+            priority={true}
+            src={"/images/Logo.png"}
+            alt="Logo"
+            width={80}
+            height={80}
+          />
         </Link>
       </div>
       <main className="flex flex-col items-center justify-center w-full h-full">

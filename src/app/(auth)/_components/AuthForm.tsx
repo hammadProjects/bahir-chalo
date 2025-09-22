@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { Input } from "@/components/ui/input";
-import { z } from "zod";
+import { email, z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { useForm } from "react-hook-form";
@@ -14,7 +14,13 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { LoaderCircleIcon } from "lucide-react";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { loginUserThunk, registerUserThunk } from "@/redux/thunk/auth.thunk";
+import { redirect } from "next/navigation";
+import useFetch from "@/hooks/useFetch";
+import { loginUser } from "../../../../actions/auth";
 
 interface Props {
   type: "sign-up" | "sign-in";
@@ -44,6 +50,8 @@ const getSchema = (type: "sign-in" | "sign-up") => {
 };
 
 const AuthForm: React.FC<Props> = ({ type }) => {
+  const { loading, data, fn: LoginUser } = useFetch(loginUser);
+
   const schema = getSchema(type);
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
@@ -54,8 +62,14 @@ const AuthForm: React.FC<Props> = ({ type }) => {
     },
   });
 
-  function onSubmit(values: z.infer<typeof schema>) {
-    console.log(values);
+  async function onSubmit(values: z.infer<typeof schema>) {
+    if (type === "sign-in") {
+      const formData = { email: values.email, password: values.password };
+      LoginUser(formData);
+    } else if (type === "sign-up") {
+      // (todo) -  change username dynamically here
+      // await dispatch(registerUserThunk({ ...values, username: "Username" }));
+    }
   }
 
   return (
@@ -139,8 +153,15 @@ const AuthForm: React.FC<Props> = ({ type }) => {
           <Button
             className="w-full bg-emerald-400 hover:bg-emerald-600/90 text-white"
             type="submit"
+            disabled={loading}
           >
-            {type === "sign-in" ? "Sign In" : "Sign Up"}
+            {loading ? (
+              <LoaderCircleIcon className="animate-spin" />
+            ) : type === "sign-in" ? (
+              "Sign In"
+            ) : (
+              "Sign Up"
+            )}
           </Button>
         </form>
       </Form>

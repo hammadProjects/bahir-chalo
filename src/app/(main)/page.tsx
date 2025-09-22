@@ -12,11 +12,11 @@ import { plans, steps } from "@/lib/data";
 import { ArrowRight, Check, MoveRight } from "lucide-react";
 import Link from "next/link";
 
-export default function Home() {
+export default async function Home() {
   return (
     <>
-      <BgGradient />
-      <section className="py-30 text-center space-y-10">
+      <BgGradient className="top-40 md:top-10" />
+      <section className="py-20 md:py-38 text-center space-y-10 px-4">
         <h1 className="text-3xl lg:text-5xl font-bold lg:leading-14">
           Simplifying Study Abroad{" "}
           <span className="">
@@ -33,14 +33,14 @@ export default function Home() {
           to simplify every step of your study abroad journey - from courses to
           scholarships.
         </p>
-        <div className="space-x-4">
-          <Button className="bg-linear-to-r from-emerald-400 to-teal-600 hover:from-teal-600 hover:to-emerald-400 hover:scale-110 text-lg !px-6 py-6 rounded-full transition-all duration-300">
+        <div className="space-x-4 space-y-4">
+          <Button className="w-full md:w-40 bg-linear-to-r from-emerald-400 to-teal-600 hover:from-teal-600 hover:to-emerald-400 hover:scale-110 text-lg !px-6 py-6 rounded-full transition-all duration-300">
             <Link className="flex items-center gap-1" href={"/onboarding"}>
               Get Started <ArrowRight />
             </Link>
           </Button>
           <Button
-            className="bg-muted/60 border-none px-6 py-6 text-lg rounded-full hover:scale-110 transition-all duration-300"
+            className="w-full md:w-40 bg-muted/60 border-none px-6 py-6 text-lg rounded-full hover:scale-110 transition-all duration-300"
             variant={"outline"}
           >
             <Link href={"/consultants"}>Find Consultants</Link>
@@ -60,12 +60,12 @@ export default function Home() {
         </p>
       </section> */}
 
-      <section className="flex flex-col items-center justify-center bg-gray-50 py-20 px-4">
+      <section className="flex flex-col items-center justify-center bg-gray-50 py-10 md:py-20 px-4">
         <h3 className="text-teal-600 font-bold text-xl">What to Expect?</h3>
         <p className="text-center text-2xl md:text-3xl teal-600 font-bold max-w-lg mt-4">
           Get matched with scholarships in just a few clicks.
         </p>
-        <div className="mt-10 max-w-3xl w-full grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="mt-5 md:mt-10 max-w-3xl w-full grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-8">
           {steps.map(({ icon, title, description }, index) => (
             <div
               className="relative border-transparent hover:border-emerald-400 transition-all text-center border-[2px] p-6 rounded-md"
@@ -89,7 +89,7 @@ export default function Home() {
 
       <section
         id="pricing"
-        className="flex flex-col items-center justify-center py-20 px-4"
+        className="flex flex-col items-center justify-center py-10 md:py-20 px-4"
       >
         <h3 className="font-semibold text-xl text-emerald-600 mb-8">Pricing</h3>
         <div className="max-w-7xl w-full grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -130,7 +130,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="flex flex-col items-center justify-center py-20 px-4 bg-gray-50">
+      <section className="flex flex-col items-center justify-center py-10 md:py-20 px-4 bg-gray-50">
         <h4 className="text-center text-2xl md:text-3xl lg:text-4xl font-bold">
           From Dreaming to Departing — Let&apos;s Make It Happen
         </h4>
