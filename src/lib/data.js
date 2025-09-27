@@ -69,9 +69,3 @@ export const plans = [
     ],
   },
 ];
-
-export const allowedRoutes = {
-  admin: ["/admin"],
-  consultant: ["/consultant"],
-  student: ["/consultants/", "/student"],
-};

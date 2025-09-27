@@ -6,7 +6,7 @@ export const verifyAuth = async () => {
   const token = cookieStore.get("token")?.value;
 
   try {
-    const data = await api.put(
+    const res = await api.put(
       "/auth/validate-token",
       {},
       {
@@ -17,9 +17,12 @@ export const verifyAuth = async () => {
       }
     );
 
-    return data.data;
-  } catch (error) {
+    return { success: res.data?.success, role: res.data?.role };
+  } catch (error: any) {
     // if error just return false
-    return { success: false };
+    return {
+      success: false,
+      message: error?.response?.data?.message || "Something Went Wrong",
+    };
   }
 };

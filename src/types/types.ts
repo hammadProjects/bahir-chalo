@@ -36,3 +36,19 @@ export type Role = "unassigned" | "admin" | "student" | "consultant";
 export interface UserRoleFormData {
   role: Role;
 }
+
+export interface Consultant {
+  _id: string;
+  username: string;
+  email: string;
+  otpVerified: boolean;
+  role: "student" | "consultant" | "admin" | "unassigned";
+  credits: number;
+  consultantProfile: {
+    bio: string;
+    certificateUrl: string;
+    status: "pending" | "approved" | "rejected";
+  };
+  createdAt: Date;
+  updatedAt: Date;
+}

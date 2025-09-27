@@ -10,12 +10,12 @@ export default function BgGradient({ children, className }: BgGradientProps) {
     <div className={`relative ${className}`}>
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-30"
+        className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-30"
       >
         <div
           className="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[20rem] -translate-x-1/2 rotate-[30deg]
           bg-gradient-to-br from-teal-400 to-emerald-500
-          opacity-20 sm:left-[calc(50%-30rem)] sm:w-[36rem]"
+          opacity-35 sm:left-[calc(50%-30rem)] sm:w-[36rem]"
         />
       </div>
       {children}

@@ -6,27 +6,10 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { ArrowLeftIcon, LoaderCircle } from "lucide-react";
-import { z } from "zod";
-import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { forgetPasswordThunk } from "@/redux/thunk/auth.thunk";
-import { toast } from "sonner";
 
 const ForgetPasswordPage = () => {
   const [email, setEmail] = useState("");
-  const dispatch = useAppDispatch();
-  const { loading } = useAppSelector((store) => store.auth);
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const result = z.email().safeParse(email);
-    if (!result.success) {
-      toast.error("Email is not Valid", { richColors: true });
-      return;
-    }
-
-    await dispatch(forgetPasswordThunk({ email }));
-    localStorage.setItem("email", email);
-  };
+  const [loading, setLoading] = useState(false);
 
   return (
     <AuthPage
@@ -34,7 +17,7 @@ const ForgetPasswordPage = () => {
       description="Enter your email to receive a reset link."
     >
       <div>
-        <form className="space-y-2" onSubmit={handleSubmit}>
+        <form className="space-y-2">
           <Label htmlFor="email">Email</Label>
           <Input
             id="email"

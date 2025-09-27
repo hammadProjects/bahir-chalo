@@ -5,6 +5,7 @@ import Footer from "@/components/core/Footer";
 import { Source_Sans_3 as Sans } from "next/font/google";
 import ReduxProvider from "@/redux/provider";
 import { Toaster } from "@/components/ui/sonner";
+import ReactQueryProvider from "@/lib/ReactQueryProvider";
 
 const fontSans = Sans({
   variable: "--font-Source_Sans_3",
@@ -24,11 +25,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${fontSans.className} antialiased`}>
-        <ReduxProvider>
+        {/* <ReduxProvider> */}
+        <ReactQueryProvider>
           <Header />
           {children}
           <Footer />
-        </ReduxProvider>
+        </ReactQueryProvider>
+        {/* </ReduxProvider> */}
         <Toaster />
       </body>
     </html>

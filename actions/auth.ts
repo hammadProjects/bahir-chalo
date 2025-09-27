@@ -1,29 +1,178 @@
 "use server";
 import api from "@/services/api";
-import { LoginUserPayload } from "@/types/types";
-import { toast } from "sonner";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
-export const loginUser = async (formData: LoginUserPayload) => {
+export const loginUserAction = async (
+  prevState: unknown,
+  formData: FormData
+) => {
   try {
-    console.log("formData from auth.ts", formData);
-    if (!formData || !formData.email || !formData.password) {
-      toast.error("All fieds are required");
-      return;
-    }
-    console.log("is it even coming here huh😒");
+    if (!formData.get("email") || !formData.get("password"))
+      return {
+        success: false,
+        message: "All Fields are Required",
+      };
 
-    const data = await api.post("/auth/sign-in", formData, {
+    const payload = {
+      email: formData.get("email"),
+      password: formData.get("password"),
+    };
+
+    const res = await api.post("/auth/sign-in", payload, {
       withCredentials: true,
     });
-    console.log("👌 not beiing called uh?");
-    const { user, success, message } = data.data;
-    console.log("data from auth.ts", data.headers);
 
-    return data.data;
+    console.log("data from auth.ts", res.data);
+
+    const token = res.data?.token;
+    if (!token)
+      return {
+        success: false,
+        message: "Please Login TO Continue",
+        url: "/sign-in",
+      };
+
+    (await cookies()).set("token", token as string, {
+      httpOnly: true,
+      sameSite: "strict",
+      secure: true,
+      maxAge: 60 * 60 * 24 * 7,
+    });
+
+    let url =
+      res.data?.user?.role === "unassigned"
+        ? "/onboarding"
+        : `/${res.data?.user?.role}`;
+
+    return {
+      success: true,
+      message: res.data?.message || "You are Successfully Registered",
+      url,
+    };
   } catch (error: any) {
     // (todo) - change error type here
-    // toast.error(error.response.data.message);
-    // console.log("error from auth.ts", error);
-    return error;
+    return {
+      success: false,
+      message: error.response?.data.message || "Something Went Wrong",
+      // url: "/verify-otp",
+    };
+  }
+};
+
+export const registerUserAction = async (
+  prevState: unknown,
+  FormData: FormData
+) => {
+  try {
+    // validate with zod
+    const email = FormData.get("email");
+    const password = FormData.get("password");
+
+    if (!FormData || !email || !password)
+      return {
+        success: false,
+        message: "All Fields are Required",
+      };
+
+    const payload = {
+      // username: FormData.get("username"),
+      username: "Random Username",
+      email: FormData.get("email"),
+      password: FormData.get("password"),
+    };
+
+    // store email in cookie
+    (await cookies()).set("email", email as string, {
+      httpOnly: true,
+      sameSite: "strict",
+      secure: true,
+      maxAge: 60 * 60 * 24 * 7,
+    });
+
+    const res = await api.post("/auth/sign-up", payload);
+    return {
+      success: true,
+      message: res.data?.message || "You are Successfully Registered",
+      url: "/verify-otp",
+    };
+  } catch (error: any) {
+    console.log(error);
+    return {
+      success: false,
+      message: error?.response?.data?.message || "Something Went Wrong",
+    };
+  }
+};
+
+export const verifyOtpAction = async (
+  prevState: unknown,
+  formData: FormData
+) => {
+  try {
+    const otp = formData.get("otp");
+    if (!otp)
+      return {
+        success: false,
+        message: "OTP is Required",
+      };
+
+    const cookieStore = await cookies();
+    const email = cookieStore.get("email")?.value;
+
+    if (!email)
+      return {
+        success: false,
+        message: "Email is Required",
+      };
+
+    const payload = { otpCode: otp, email: email };
+
+    const res = await api.post("/auth/otp/verify", payload);
+
+    // set token as cookie - send token as response from backend
+    cookieStore.set("token", res.data?.token as string, {
+      httpOnly: true,
+      sameSite: "strict",
+      secure: true,
+      maxAge: 60 * 60 * 24 * 7,
+    });
+
+    return {
+      success: true,
+      message: res.data?.message,
+      url: "/onboarding",
+    };
+  } catch (error: any) {
+    console.log(error);
+    return {
+      success: false,
+      message: error?.response?.data?.message || "Something Went Wrong",
+    };
+  }
+};
+
+export const otpResendAction = async (prevState: unknown) => {
+  try {
+    const cookieStore = await cookies();
+    const email = cookieStore.get("email")?.value;
+
+    if (!email)
+      return {
+        success: false,
+        message: "Email is Required",
+      };
+
+    const payload = { email };
+
+    const res = await api.post("/auth/otp/resend", payload);
+    console.log(res.data);
+    return res.data;
+  } catch (error: any) {
+    console.log(error.response);
+    return {
+      success: false,
+      message: error?.response?.data?.message || "Something Went Wrong",
+    };
   }
 };

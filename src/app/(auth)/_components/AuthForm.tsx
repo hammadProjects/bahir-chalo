@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { Input } from "@/components/ui/input";
-import { email, z } from "zod";
+import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { useForm } from "react-hook-form";
@@ -14,43 +14,26 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import React, { useEffect, useState } from "react";
+import React, { useActionState, useEffect, useState } from "react";
 import { LoaderCircleIcon } from "lucide-react";
-import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { loginUserThunk, registerUserThunk } from "@/redux/thunk/auth.thunk";
+import { toast } from "sonner";
 import { redirect } from "next/navigation";
-import useFetch from "@/hooks/useFetch";
-import { loginUser } from "../../../../actions/auth";
+import { signInSchema, signUpSchema } from "@/lib/zodSchema";
 
 interface Props {
   type: "sign-up" | "sign-in";
+  action: (
+    prevState: unknown,
+    data: FormData
+  ) => { success: boolean; message: string; url?: string };
 }
-
-const signUpSchema = z.object({
-  email: z.email(),
-  password: z
-    .string("Please Enter a Valid Password!")
-    .min(4, "Password must be atleast 4 Characters"),
-  username: z
-    .string("Please Enter a Valid Name")
-    .min(4, "Password must be atleast 4 Characters")
-    .optional(),
-  picture: z.file().optional(),
-});
-
-const signInSchema = z.object({
-  email: z.email(),
-  password: z
-    .string("Please Enter a Valid Password!")
-    .min(4, "Password must be atleast 4 Characters"),
-});
 
 const getSchema = (type: "sign-in" | "sign-up") => {
   return type === "sign-up" ? signUpSchema : signInSchema;
 };
 
-const AuthForm: React.FC<Props> = ({ type }) => {
-  const { loading, data, fn: LoginUser } = useFetch(loginUser);
+const AuthForm: React.FC<Props> = ({ type, action }) => {
+  const [message, formAction, isPending] = useActionState(action, null);
 
   const schema = getSchema(type);
   const form = useForm<z.infer<typeof schema>>({
@@ -62,20 +45,19 @@ const AuthForm: React.FC<Props> = ({ type }) => {
     },
   });
 
-  async function onSubmit(values: z.infer<typeof schema>) {
-    if (type === "sign-in") {
-      const formData = { email: values.email, password: values.password };
-      LoginUser(formData);
-    } else if (type === "sign-up") {
-      // (todo) -  change username dynamically here
-      // await dispatch(registerUserThunk({ ...values, username: "Username" }));
+  useEffect(() => {
+    if (message?.success) {
+      toast.success(message.message);
+    } else if (message?.success == false) {
+      toast.error(message?.message);
     }
-  }
+    if (message?.url) redirect(message.url);
+  }, [message]);
 
   return (
     <div>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <form action={formAction} className="space-y-8">
           {/* {type === "sign-up" && (
             <FormField
               control={form.control}
@@ -153,9 +135,9 @@ const AuthForm: React.FC<Props> = ({ type }) => {
           <Button
             className="w-full bg-emerald-400 hover:bg-emerald-600/90 text-white"
             type="submit"
-            disabled={loading}
+            disabled={isPending}
           >
-            {loading ? (
+            {isPending ? (
               <LoaderCircleIcon className="animate-spin" />
             ) : type === "sign-in" ? (
               "Sign In"

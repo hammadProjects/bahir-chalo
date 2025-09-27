@@ -1,6 +1,7 @@
 import React from "react";
 import AuthForm from "../_components/AuthForm";
 import AuthPage from "../_components/AuthPage";
+import { loginUserAction } from "../../../../actions/auth";
 
 const SignInPage = () => {
   return (
@@ -8,7 +9,7 @@ const SignInPage = () => {
       title="Sign In"
       description="Enter your email below to login to your account."
     >
-      <AuthForm type="sign-in" />
+      <AuthForm action={loginUserAction} type="sign-in" />
     </AuthPage>
   );
 };

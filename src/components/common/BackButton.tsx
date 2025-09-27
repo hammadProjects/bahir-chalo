@@ -6,7 +6,7 @@ import { ArrowLeft } from "lucide-react";
 interface Props {
   title: string;
   url?: string;
-  style: string;
+  style?: string;
 }
 
 const BackButton: React.FC<Props> = ({ title, url, style }) => {

@@ -11,3 +11,9 @@ export const redirectTo = (req: NextRequest, url: string) => {
   cloneURL.pathname = url;
   return NextResponse.redirect(cloneURL);
 };
+
+export const allowedRoutes: Record<string, string[]> = {
+  admin: ["/admin"],
+  consultant: ["/consultant"],
+  student: ["/consultants/", "/student"],
+};

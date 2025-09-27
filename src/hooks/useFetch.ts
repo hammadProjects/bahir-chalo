@@ -17,15 +17,16 @@ const useFetch = (cb) => {
       setError(null);
       // toast.success(response);
 
-      console.log("response from usefetch", response);
+      const { success, message } = response;
+      if (!success) {
+        toast.error(response);
+        return;
+      }
+      toast.success(message);
     } catch (error: any) {
       // dynamically handle errors
-      console.log(
-        "usefetch error message",
-        error,
-        "error.message",
-        error.message
-      );
+      // Will be called when server is not working - (todo) - find out one more particualr reason for this to run
+
       setError("Please Try Again");
       toast.error("Please Try Again");
     } finally {

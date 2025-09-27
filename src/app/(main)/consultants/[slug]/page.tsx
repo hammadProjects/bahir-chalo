@@ -6,20 +6,33 @@ import { Clock, FileText, Medal, ChevronDown, ChevronUp } from "lucide-react";
 import React, { useState } from "react";
 import { TabsDemo } from "../../_components/Tabs";
 import BackButton from "@/components/common/BackButton";
+import { useParams, usePathname } from "next/navigation";
+import { useQuery } from "@tanstack/react-query";
+import { getConsultantById } from "../_api/getConsultantById";
+import ByIdShimmer from "../_components/ByIdShimmer";
 
 const ConsultantProfile = () => {
+  const { slug } = useParams<{ slug: string }>();
+  // if id are different it considers them different - if same it caches it
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["consultant-by-id", slug],
+    queryFn: ({ queryKey }) => getConsultantById(queryKey[1]),
+  });
+
   const [show, setShow] = useState(false);
-  return (
-    <section className="min-h-screen py-20 max-w-5xl mx-auto">
+  return isLoading ? (
+    <ByIdShimmer />
+  ) : (
+    <section className="min-h-screen py-10 md:py-20 max-w-5xl mx-auto px-4">
       <div>
         <BackButton
           title="Back to Consultants"
           style="mb-8"
           url="/consultants"
         />
-        <h1 className="text-4xl font-bold mb-4">Muhammad Hammad</h1>
+        <h1 className="text-4xl font-bold mb-4">{data?.username}</h1>
       </div>
-      <div className="grid grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         <Card className="bg-muted/5 border-emerald-400/10 h-fit">
           <CardContent className="flex flex-col items-center pt-10">
             <div className="h-28 w-28 rounded-full bg-red-100" />
@@ -30,7 +43,7 @@ const ConsultantProfile = () => {
               height={160}
               className="rounded-full"
             /> */}
-            <h2 className="font-bold text-xl mt-4 mb-2">Muhammad Hammad</h2>
+            <h2 className="font-bold text-xl mt-4 mb-2">{data?.username}</h2>
             <p className="flex mt-4 mb-6">
               <Medal className="text-emerald-400/90" />4 years experience
             </p>
@@ -42,10 +55,10 @@ const ConsultantProfile = () => {
             </Button>
           </CardContent>
         </Card>
-        <div className="col-span-2 flex flex-col gap-6">
+        <div className="md:col-span-2 flex flex-col gap-6">
           <Card className="bg-muted/5 border-emerald-400 h-fit">
             <CardContent className="">
-              <h4 className="font-bold text-xl mb-2">About Muhammad Hammad</h4>
+              <h4 className="font-bold text-xl mb-2">About {data?.username}</h4>
               <p className="text-muted-foreground text-sm mb-6">
                 Professional background and expertise
               </p>
@@ -56,7 +69,7 @@ const ConsultantProfile = () => {
                   Description
                 </h5>
                 <p className="text-muted-foreground mt-3">
-                  Expert in Scholarships
+                  {data?.consultantProfile?.bio}
                 </p>
               </div>
               <Separator className="bg-emerald-600/20 my-4" />

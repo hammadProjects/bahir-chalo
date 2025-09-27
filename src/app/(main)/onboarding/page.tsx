@@ -14,6 +14,7 @@ const OnboardingPage = () => {
     formData.append("role", "student");
     submitUserRole(formData);
   };
+
   return (
     <section className="py-10 md:py-20 min-h-screen px-4">
       <div className="space-y-8 md:space-y-14">
@@ -36,9 +37,7 @@ const OnboardingPage = () => {
                 study abroad journey.
               </p>
               <Button
-                onClick={() => {
-                  console.log("Student onboarded");
-                }}
+                onClick={setStudentRole}
                 className="w-full bg-emerald-600/80 hover:bg-emerald-600/90 text-white"
               >
                 <Link href={"/"}>Continue as Student</Link>
