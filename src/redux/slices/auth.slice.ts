@@ -32,7 +32,7 @@ const authSlice = createSlice({
       .addCase(loginUserThunk.pending, (state) => {
         state.loading = true;
       })
-      .addCase(loginUserThunk.fulfilled, (state, action) => {
+      .addCase(loginUserThunk.fulfilled, (state) => {
         state.loading = false;
         state.token = "null";
         toast.success("You are Successfully Logged In", {
@@ -72,7 +72,7 @@ const authSlice = createSlice({
       .addCase(verifyOtpThunk.pending, (state) => {
         state.loading = true;
       })
-      .addCase(verifyOtpThunk.fulfilled, (state, action) => {
+      .addCase(verifyOtpThunk.fulfilled, (state) => {
         state.loading = false;
         toast.success("OTP verified successfully", {
           richColors: true,
@@ -90,7 +90,7 @@ const authSlice = createSlice({
       .addCase(forgetPasswordThunk.pending, (state) => {
         state.loading = true;
       })
-      .addCase(forgetPasswordThunk.fulfilled, (state, action) => {
+      .addCase(forgetPasswordThunk.fulfilled, (state) => {
         state.loading = false;
         toast.success("Password reset link sent to email", {
           richColors: true,
@@ -108,7 +108,7 @@ const authSlice = createSlice({
       .addCase(resetPasswordThunk.pending, (state) => {
         state.loading = true;
       })
-      .addCase(resetPasswordThunk.fulfilled, (state, action) => {
+      .addCase(resetPasswordThunk.fulfilled, (state) => {
         state.loading = false;
         toast.success("Password has been changed successfully", {
           richColors: true,

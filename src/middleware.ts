@@ -7,7 +7,7 @@ export const middleware = async (req: NextRequest) => {
   const cookieStore = await cookies();
   if (!cookieStore.get("token")) return redirectTo(req, "/sign-in");
 
-  const { success, message, role } = await verifyAuth(); // can get role from here as well
+  const { success, role } = await verifyAuth(); // can get role from here as well
   if (!success) return redirectTo(req, "/sign-in");
 
   const roleRoutes = allowedRoutes[role] || [];

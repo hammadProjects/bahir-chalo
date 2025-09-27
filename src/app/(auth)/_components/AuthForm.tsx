@@ -14,7 +14,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import React, { useActionState, useEffect, useState } from "react";
+import React, { useActionState, useEffect } from "react";
 import { LoaderCircleIcon } from "lucide-react";
 import { toast } from "sonner";
 import { redirect } from "next/navigation";
@@ -24,8 +24,8 @@ interface Props {
   type: "sign-up" | "sign-in";
   action: (
     prevState: unknown,
-    data: FormData
-  ) => { success: boolean; message: string; url?: string };
+    formData: FormData
+  ) => Promise<{ success: boolean; message: string; url?: string }>;
 }
 
 const getSchema = (type: "sign-in" | "sign-up") => {

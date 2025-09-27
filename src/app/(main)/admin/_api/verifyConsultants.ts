@@ -17,6 +17,7 @@ export default async function verifyConsultant(
     });
     toast.success(data.data?.message);
   } catch (error) {
+    console.log(error);
     toast.error("Something Went Wrong. Please Try Again");
   } finally {
     setLoading(false);

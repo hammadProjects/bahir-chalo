@@ -8,7 +8,7 @@ import Link from "next/link";
 import React from "react";
 
 const OnboardingPage = () => {
-  const { loading, data, error, fn: submitUserRole } = useFetch(setUserRole);
+  const { fn: submitUserRole } = useFetch(setUserRole);
   const setStudentRole = () => {
     const formData = new FormData();
     formData.append("role", "student");

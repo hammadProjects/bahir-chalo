@@ -35,7 +35,8 @@ const ForgetPasswordPage = () => {
           </div>
           <Button
             disabled={loading}
-            type="submit"
+            // type="submit"
+            onClick={() => setLoading(true)}
             className="w-full mt-2 bg-emerald-400 hover:bg-emerald-400/90 text-white"
           >
             {loading ? (

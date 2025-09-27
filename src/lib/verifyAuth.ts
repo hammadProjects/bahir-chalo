@@ -18,11 +18,15 @@ export const verifyAuth = async () => {
     );
 
     return { success: res.data?.success, role: res.data?.role };
-  } catch (error: any) {
+  } catch (error) {
     // if error just return false
-    return {
-      success: false,
-      message: error?.response?.data?.message || "Something Went Wrong",
-    };
+    let message = "Something Went Wrong";
+
+    if (error && typeof error === "object" && "response" in error) {
+      const err = error as { response?: { data?: { message?: string } } };
+      message = err.response?.data?.message || message;
+    }
+
+    return { success: false, message };
   }
 };

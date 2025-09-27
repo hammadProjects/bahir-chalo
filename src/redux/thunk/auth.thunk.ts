@@ -14,10 +14,14 @@ export const loginUserThunk = createAsyncThunk(
     try {
       const response = await api.post("/auth/sign-in", payload);
       return response.data;
-    } catch (error: any) {
-      return rejectWithValue(
-        error?.response?.data?.message || "Failed to Login"
-      );
+    } catch (error) {
+      let message = "Failed to Login";
+
+      if (error && typeof error === "object" && "response" in error) {
+        const err = error as { response?: { data?: { message?: string } } };
+        message = err.response?.data?.message || message;
+      }
+      return rejectWithValue(message);
     }
   }
 );
@@ -28,10 +32,14 @@ export const registerUserThunk = createAsyncThunk(
     try {
       const response = await api.post("/auth/sign-up", payload);
       return response.data;
-    } catch (error: any) {
-      return rejectWithValue(
-        error?.response?.data?.message || "Failed to Register. Please Try Again"
-      );
+    } catch (error) {
+      let message = "Failed to Register. Please Try Again";
+
+      if (error && typeof error === "object" && "response" in error) {
+        const err = error as { response?: { data?: { message?: string } } };
+        message = err.response?.data?.message || message;
+      }
+      return rejectWithValue(message);
     }
   }
 );
@@ -42,11 +50,14 @@ export const verifyOtpThunk = createAsyncThunk(
     try {
       const response = await api.post("/auth/otp/verify", payload);
       return response.data;
-    } catch (error: any) {
-      return rejectWithValue(
-        error?.response?.data?.message ||
-          "Failed to Verify OTP. Please Try Again"
-      );
+    } catch (error) {
+      let message = "Failed to Verify OTP. Please Try Again";
+
+      if (error && typeof error === "object" && "response" in error) {
+        const err = error as { response?: { data?: { message?: string } } };
+        message = err.response?.data?.message || message;
+      }
+      return rejectWithValue(message);
     }
   }
 );
@@ -57,10 +68,14 @@ export const otpResendThunk = createAsyncThunk(
     try {
       const response = await api.post("/auth/otp/resend", payload);
       return response.data;
-    } catch (error: any) {
-      return rejectWithValue(
-        error?.response?.data?.message || "Failed to Resend OTP"
-      );
+    } catch (error) {
+      let message = "Failed to Resend OTP";
+
+      if (error && typeof error === "object" && "response" in error) {
+        const err = error as { response?: { data?: { message?: string } } };
+        message = err.response?.data?.message || message;
+      }
+      return rejectWithValue(message);
     }
   }
 );
@@ -71,10 +86,14 @@ export const forgetPasswordThunk = createAsyncThunk(
     try {
       const response = await api.post("/auth/forget-password", payload);
       return response.data;
-    } catch (error: any) {
-      return rejectWithValue(
-        error?.response?.data?.message || "Failed to Forget Password"
-      );
+    } catch (error) {
+      let message = "Failed to Forget Password";
+
+      if (error && typeof error === "object" && "response" in error) {
+        const err = error as { response?: { data?: { message?: string } } };
+        message = err.response?.data?.message || message;
+      }
+      return rejectWithValue(message);
     }
   }
 );
@@ -89,10 +108,14 @@ export const resetPasswordThunk = createAsyncThunk(
         payload
       );
       return response.data;
-    } catch (error: any) {
-      return rejectWithValue(
-        error?.response?.data?.message || "Failed to Reset Password"
-      );
+    } catch (error) {
+      let message = "Failed to Reset Password";
+
+      if (error && typeof error === "object" && "response" in error) {
+        const err = error as { response?: { data?: { message?: string } } };
+        message = err.response?.data?.message || message;
+      }
+      return rejectWithValue(message);
     }
   }
 );

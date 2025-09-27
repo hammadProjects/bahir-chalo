@@ -6,7 +6,7 @@ import { Clock, FileText, Medal, ChevronDown, ChevronUp } from "lucide-react";
 import React, { useState } from "react";
 import { TabsDemo } from "../../_components/Tabs";
 import BackButton from "@/components/common/BackButton";
-import { useParams, usePathname } from "next/navigation";
+import { useParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { getConsultantById } from "../_api/getConsultantById";
 import ByIdShimmer from "../_components/ByIdShimmer";
@@ -14,7 +14,7 @@ import ByIdShimmer from "../_components/ByIdShimmer";
 const ConsultantProfile = () => {
   const { slug } = useParams<{ slug: string }>();
   // if id are different it considers them different - if same it caches it
-  const { data, isLoading, error } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ["consultant-by-id", slug],
     queryFn: ({ queryKey }) => getConsultantById(queryKey[1]),
   });

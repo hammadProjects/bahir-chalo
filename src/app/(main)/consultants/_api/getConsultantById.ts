@@ -14,8 +14,13 @@ export const getConsultantById = async (id: string) => {
     });
 
     return data.data?.data?.consultant as Consultant;
-  } catch (error: any) {
-    console.log(error?.response?.data);
-    return error?.response?.data?.message || "Something Went Wrong";
+  } catch (error) {
+    let message = "Something Went Wrong";
+
+    if (error && typeof error === "object" && "response" in error) {
+      const err = error as { response?: { data?: { message?: string } } };
+      message = err.response?.data?.message || message;
+    }
+    return null;
   }
 };

@@ -45,10 +45,7 @@ const AdminDashboard = () => {
         />
       </TabsContent>
       <TabsContent value="consultants">
-        <VerifiedConsulants
-          data={consultants.data}
-          ApiLoading={consultants.isLoading}
-        />
+        <VerifiedConsulants data={consultants.data} />
       </TabsContent>
     </>
   );
