@@ -24,7 +24,7 @@ export default function Home() {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.2 }}
         >
-          <h1 className="text-3xl md:text-5xl font-bold lg:leading-14">
+          <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold md:leading-14 lg:leading-16">
             Simplifying Study Abroad{" "}
             <span>
               <span className="inline-block relative px-1">
@@ -41,7 +41,7 @@ export default function Home() {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.4 }}
         >
-          <p className="text-muted-foreground text-lg max-w-lg mx-auto">
+          <p className="text-muted-foreground sm:text-lg lg:text-xl max-w-lg mx-auto">
             Seek personalized guidance from AI and connect with expert
             consultants to simplify every step of your study abroad journey -
             from courses to scholarships.
@@ -53,13 +53,13 @@ export default function Home() {
           transition={{ delay: 0.6 }}
         >
           <div className="space-x-4 space-y-4">
-            <Button className="w-full md:w-40 bg-linear-to-r from-emerald-400 to-teal-600 hover:from-teal-600 hover:to-emerald-400 hover:scale-110 text-lg !px-6 py-6 rounded-full transition-all duration-300">
+            <Button className="w-full md:w-40 lg:w-48 bg-linear-to-r from-emerald-400 to-teal-600 hover:from-teal-600 hover:to-emerald-400 hover:scale-110 text-lg !px-6 py-6 lg:py-8 rounded-full transition-all duration-300">
               <Link className="flex items-center gap-1" href={"/onboarding"}>
                 Get Started <ArrowRight />
               </Link>
             </Button>
             <Button
-              className="w-full md:w-40 bg-muted/60 border-none px-6 py-6 text-lg rounded-full hover:scale-110 transition-all duration-300"
+              className="w-full md:w-40 lg:w-48 bg-muted/60 border-none px-6 py-6 lg:py-8 text-lg rounded-full hover:scale-110 transition-all duration-300"
               variant={"outline"}
             >
               <Link href={"/consultants"}>Find Consultants</Link>
@@ -154,15 +154,15 @@ export default function Home() {
         <h4 className="text-center text-2xl md:text-3xl lg:text-4xl font-bold">
           From Dreaming to Departing — Let&apos;s Make It Happen
         </h4>
-        <p className="md:text-lg text-muted-foreground mt-2 max-w-xl mx-auto text-center">
+        <p className="md:text-lg lg:text-xl text-muted-foreground mt-2 max-w-xl mx-auto text-center">
           The earlier you start, the smoother your study abroad process becomes.
           Begin today.
         </p>
         <Button
-          className="mt-6 text-white bg-linear-to-r from-emerald-400 to-teal-600 hover:from-teal-600 hover:to-emerald-400 transition-all"
+          className="group mt-6 h-10 text-white bg-linear-to-r from-emerald-400 to-teal-600 hover:from-teal-600 hover:to-emerald-400 transition-all"
           variant={"link"}
         >
-          <Link className="group flex items-center px-3" href={"/onboarding"}>
+          <Link className="flex items-center px-6" href={"/onboarding"}>
             <span className="mr-1 group-hover:mr-2 transition-margin duration-200">
               Get Started
             </span>
