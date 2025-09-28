@@ -8,7 +8,7 @@ const Footer = () => {
 
   return (
     !publicRoutes.includes(pathname) && (
-      <footer className="py-8 text-center">
+      <footer className="py-8 text-center bg-gray-100">
         <div>Made With 💖</div>
       </footer>
     )

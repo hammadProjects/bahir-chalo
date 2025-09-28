@@ -1,45 +1,38 @@
-"use client";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "../ui/button";
-import { usePathname } from "next/navigation";
-import { publicRoutes } from "@/lib/data";
+import { verifyAuth } from "@/lib/verifyAuth";
+import { getDashboardUrl } from "@/lib/utils";
 
-const Header = () => {
-  const pathname = usePathname();
+const Header = async () => {
+  const { success, role } = await verifyAuth();
+  let dashboardUrl;
+  if (success) dashboardUrl = getDashboardUrl(role) || "";
 
   return (
-    !publicRoutes.includes(pathname) && (
-      <header className="h-16 px-10">
-        <div className="flex justify-between items-center">
-          <div className="w-20 h-16">
-            <Link className="-mt-1 -ml-3 inline-block" href={"/"}>
-              <Image
-                priority={true}
-                src={"/images/Logo.png"}
-                alt="Logo"
-                width={80}
-                height={80}
-              />
-            </Link>
-          </div>
-          <Button
-            variant={"link"}
-            className=" hover:text-emerald-700/80"
-            asChild
-          >
-            <Link href={"/#pricing"}>Pricing</Link>
-          </Button>
-          <Button
-            variant={"link"}
-            className=" hover:text-emerald-700/80"
-            asChild
-          >
-            <Link href={"/sign-up"}>Sign Up</Link>
-          </Button>
+    <header className="h-16 px-10">
+      <div className="flex justify-between items-center">
+        <div className="w-20 h-16">
+          <Link className="-mt-1 -ml-3 inline-block" href={"/"}>
+            <Image
+              priority={true}
+              src={"/images/Logo.png"}
+              alt="Logo"
+              width={80}
+              height={80}
+            />
+          </Link>
         </div>
-      </header>
-    )
+        <Button variant={"link"} className=" hover:text-emerald-700/80" asChild>
+          <Link href={"/#pricing"}>Pricing</Link>
+        </Button>
+        <Button variant={"link"} className=" hover:text-emerald-700/80" asChild>
+          <Link href={dashboardUrl || "/sign-in"}>
+            {dashboardUrl ? "Dashboard" : "Sign In"}
+          </Link>
+        </Button>
+      </div>
+    </header>
   );
 };
 

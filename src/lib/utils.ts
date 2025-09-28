@@ -6,14 +6,26 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
+// For Middleware
 export const redirectTo = (req: NextRequest, url: string) => {
   const cloneURL = req.nextUrl.clone();
   cloneURL.pathname = url;
   return NextResponse.redirect(cloneURL);
 };
 
+// To redirect specific role to relative pages
 export const allowedRoutes: Record<string, string[]> = {
   admin: ["/admin"],
   consultant: ["/consultant"],
-  student: ["/consultants/", "/student"],
+  student: ["/student", "/consultants"],
+};
+
+export const getDashboardUrl = (role: string) => {
+  return role === "student"
+    ? "/student"
+    : role === "consultant"
+    ? "/consultant"
+    : role === "admin"
+    ? "/admin"
+    : "";
 };

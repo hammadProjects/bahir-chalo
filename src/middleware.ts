@@ -5,6 +5,7 @@ import { allowedRoutes, redirectTo } from "./lib/utils";
 
 export const middleware = async (req: NextRequest) => {
   const cookieStore = await cookies();
+
   if (!cookieStore.get("token")) return redirectTo(req, "/sign-in");
 
   const { success, role } = await verifyAuth(); // can get role from here as well

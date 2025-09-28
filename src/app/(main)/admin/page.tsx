@@ -23,19 +23,13 @@ const AdminDashboard = () => {
 
   const [pending, consultants] = results;
 
-  // if (pending.isLoading || consultants.isLoading)
-  //   return (
-  //     <div className="min-h-screen flex items-center justify-center">
-  //       Loading...
-  //     </div>
-  //   );
-
   if (pending.isError || consultants.isError)
     return (
       <div className="min-h-screen flex items-center justify-center">
-        Sorry There was an Error
+        {`${pending.error} ${consultants.error}`}
       </div>
     );
+
   return (
     <>
       <TabsContent value="pending-verifications">
