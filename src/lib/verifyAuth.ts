@@ -1,11 +1,14 @@
 import api from "@/services/api";
+import { cookies } from "next/headers";
 
 export const verifyAuth = async () => {
+  const token = (await cookies()).get("token")?.value;
+  if (!token) throw Error("Unauthorized");
   try {
     const res = await api.put(
       "/auth/validate-token",
       {},
-      { withCredentials: true }
+      { withCredentials: true, headers: { Authorization: `Bearer ${token}` } }
     );
 
     return {

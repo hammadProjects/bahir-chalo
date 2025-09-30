@@ -2,10 +2,16 @@
 
 import api from "@/services/api";
 import { Consultant } from "@/types/types";
+import { cookies } from "next/headers";
 
 export const getVerifiedConsultants = async () => {
+  const token = (await cookies()).get("token")?.value;
+  if (!token) throw Error("Unauthorized");
   try {
-    const data = await api.get("/consultant");
+    const data = await api.get("/consultant", {
+      withCredentials: true,
+      headers: { Authorization: `Bearer ${token}` },
+    });
 
     return data.data?.data?.consultants as Consultant[];
   } catch (error) {

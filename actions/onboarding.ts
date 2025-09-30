@@ -2,10 +2,13 @@
 import { generateError } from "@/lib/utils";
 import api from "@/services/api";
 import { OnboardingResponse } from "@/types/types";
+import { cookies } from "next/headers";
 
 // (todo) - why do we use form data instead of just passing data as it is?
 
 export async function setUserRole(formData: FormData) {
+  const token = (await cookies()).get("token")?.value;
+  if (!token) throw Error("Unauthorized");
   const role = formData.get("role");
   if (!role) throw Error("Role is Required");
   if (role != "student" && role != "consultant") throw Error("Role is invalid");
@@ -15,7 +18,7 @@ export async function setUserRole(formData: FormData) {
       const res = await api.patch<OnboardingResponse>(
         "/student/onboarding",
         {},
-        { withCredentials: true }
+        { withCredentials: true, headers: { Authorization: `Bearer ${token}` } }
       );
       const { success, message } = res.data;
       return { success, message, url: "/student" };
@@ -32,6 +35,7 @@ export async function setUserRole(formData: FormData) {
       data: { success, message },
     } = await api.patch<OnboardingResponse>("/consultant/onboarding", payload, {
       withCredentials: true,
+      headers: { Authorization: `Bearer ${token}` },
     });
 
     return { success, message, url: "/consultant/verification" };

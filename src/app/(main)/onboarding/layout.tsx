@@ -7,8 +7,6 @@ export const metadata: Metadata = {
 
 interface Props {
   children: React.ReactNode;
-  title: string;
-  description: string;
 }
 
 const OnboardingLayout: React.FC<Props> = ({ children }) => {
