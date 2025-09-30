@@ -5,9 +5,24 @@ import { verifyAuth } from "@/lib/verifyAuth";
 import { getDashboardUrl } from "@/lib/utils";
 
 const Header = async () => {
-  const { success, role } = await verifyAuth();
-  let dashboardUrl;
-  if (success) dashboardUrl = getDashboardUrl(role) || "";
+  const { success, role, user } = await verifyAuth();
+  let dashboardUrl = "/sign-in";
+  if (success)
+    dashboardUrl = getDashboardUrl(
+      role,
+      role === "consultant" && user?.consultantProfile?.status
+    );
+
+  const btnText =
+    role === "unassigned"
+      ? "Onboarding"
+      : role === "consultant" &&
+        (user?.consultantProfile?.status === "pending" ||
+          user?.consultantProfile?.status === "rejected")
+      ? "Verification"
+      : dashboardUrl != "/sign-in"
+      ? "Dashboard"
+      : "Sign In";
 
   return (
     <header className="h-16 px-10">
@@ -27,9 +42,7 @@ const Header = async () => {
           <Link href={"/#pricing"}>Pricing</Link>
         </Button>
         <Button variant={"link"} className=" hover:text-emerald-700/80" asChild>
-          <Link href={dashboardUrl || "/sign-in"}>
-            {dashboardUrl ? "Dashboard" : "Sign In"}
-          </Link>
+          <Link href={dashboardUrl}>{btnText}</Link>
         </Button>
       </div>
     </header>

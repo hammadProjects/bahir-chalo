@@ -17,7 +17,7 @@ import {
 import React, { useActionState, useEffect } from "react";
 import { LoaderCircleIcon } from "lucide-react";
 import { toast } from "sonner";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { signInSchema, signUpSchema } from "@/lib/zodSchema";
 
 interface Props {
@@ -33,6 +33,7 @@ const getSchema = (type: "sign-in" | "sign-up") => {
 };
 
 const AuthForm: React.FC<Props> = ({ type, action }) => {
+  const { push } = useRouter();
   const [message, formAction, isPending] = useActionState(action, null);
 
   const schema = getSchema(type);
@@ -51,8 +52,8 @@ const AuthForm: React.FC<Props> = ({ type, action }) => {
     } else if (message?.success == false) {
       toast.error(message?.message);
     }
-    if (message?.url) redirect(message.url);
-  }, [message]);
+    if (message?.url) push(message.url);
+  }, [push, message]);
 
   return (
     <div>

@@ -8,15 +8,26 @@ export const middleware = async (req: NextRequest) => {
 
   if (!cookieStore.get("token")) return redirectTo(req, "/sign-in");
 
-  const { success, role } = await verifyAuth(); // can get role from here as well
+  const { success, role, user } = await verifyAuth(); // can get role from here as well
   if (!success) return redirectTo(req, "/sign-in");
+
+  // create a helper function like getDashboardRoutes for in header
+
+  if (
+    role == "consultant" &&
+    req.nextUrl.pathname !== "/verification" &&
+    user.consultantProfile.status === "pending"
+  )
+    return redirectTo(req, "/verification");
 
   const roleRoutes = allowedRoutes[role] || [];
   const isAllowed = roleRoutes.some((route) =>
     req.nextUrl.pathname.startsWith(route)
   );
 
-  if (!isAllowed) return redirectTo(req, roleRoutes[0]);
+  if (!isAllowed) {
+    return redirectTo(req, roleRoutes[0] || "/sign-in");
+  }
 
   return NextResponse.next();
 };
@@ -28,5 +39,6 @@ export const config: MiddlewareConfig = {
     "/student/:paths*",
     "/consultants/:paths*",
     "/onboarding",
+    "/verification",
   ],
 };

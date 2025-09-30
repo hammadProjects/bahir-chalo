@@ -1,5 +1,6 @@
 import { ParamValue } from "next/dist/server/request/params";
 
+// API Payload Types
 export interface AuthState {
   loading: boolean;
   error: string | null;
@@ -51,4 +52,16 @@ export interface Consultant {
   };
   createdAt: Date;
   updatedAt: Date;
+}
+
+// Backend Response Types
+export interface OnboardingResponse {
+  success: boolean;
+  message: string;
+}
+
+export interface UseFetchData {
+  success: boolean;
+  message: string;
+  url: string;
 }

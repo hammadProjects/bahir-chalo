@@ -66,12 +66,7 @@ const PendingVerifications: React.FC<Props> = ({ data, ApiLoading }) => {
                 </Badge>
                 <Dialog>
                   <DialogTrigger asChild>
-                    <Button
-                      variant="secondary"
-                      className="bg-gray-400/20 hover:bg-gray-400/25 transition-colors border-[1px] border-black"
-                    >
-                      View Details
-                    </Button>
+                    <Button variant="secondary">View Details</Button>
                   </DialogTrigger>
                   <DialogContent className="md:w-[780px]">
                     <DialogHeader>
