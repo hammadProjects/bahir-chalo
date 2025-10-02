@@ -3,9 +3,12 @@ import { TabsContent } from "@/components/ui/tabs";
 import PendingVerifications from "./_components/PendingVerifications";
 
 import { useQueries } from "@tanstack/react-query";
-import getPendingConsultants from "./_api/getPendingConsultants";
-import getAllConsultants from "./_api/getAllConsultants";
+
 import VerifiedConsulants from "./_components/VerifiedConsultants";
+import {
+  getAllConsultants,
+  getPendingConsultants,
+} from "../../../../actions/admin";
 
 const AdminDashboard = () => {
   const results = useQueries({

@@ -1,4 +1,5 @@
 "use server";
+import { generateError } from "@/lib/utils";
 import api from "@/services/api";
 import { cookies } from "next/headers";
 
@@ -49,12 +50,13 @@ export const loginUserAction = async (
       message: res.data?.message || "You are Successfully Registered",
       url,
     };
-  } catch (error: any) {
+  } catch (error) {
     // (todo) - change error type here
+    console.log(error);
+    const message = generateError(error);
     return {
       success: false,
-      message: error.response?.data.message || "Something Went Wrong",
-      // url: "/verify-otp",
+      message,
     };
   }
 };

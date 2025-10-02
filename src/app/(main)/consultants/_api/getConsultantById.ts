@@ -1,19 +1,25 @@
 "use server";
 
 import api from "@/services/api";
-import { Consultant } from "@/types/types";
+import { Availability, Consultant } from "@/types/types";
 import { cookies } from "next/headers";
 
 export const getConsultantById = async (id: string) => {
-  const token = (await cookies()).get("token")?.value;
-  if (!token) throw Error("Unauthorized");
   try {
+    const token = (await cookies()).get("token")?.value;
+    if (!token) throw Error("Unauthorized");
     const data = await api.get(`/consultant/${id}`, {
       withCredentials: true,
       headers: { Authorization: `Bearer ${token}` },
     });
 
-    return data.data?.data?.consultant as Consultant;
+    console.log("APi being called");
+
+    return data.data?.data as {
+      consultant: Consultant;
+      availabilities: Record<string, Availability[]>;
+      totalAvailabilities: number;
+    };
   } catch (error) {
     let message = "Something Went Wrong";
 

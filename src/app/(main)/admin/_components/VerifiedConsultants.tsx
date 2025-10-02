@@ -30,7 +30,10 @@ const VerifiedConsulants: React.FC<Props> = ({ data }) => {
                   <User className="w-10 h-10 p-2 rounded-md bg-gradient-to-r from-emerald-300 to-emerald-100 text-emerald-600" />
                   <div>
                     <h3 className="font-semibold">{consultant.username}</h3>
-                    <p className="text-sm">3 years experience</p>
+                    <p className="text-sm">
+                      {consultant?.consultantProfile?.experience} years
+                      experience
+                    </p>
                   </div>
                 </div>
 

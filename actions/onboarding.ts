@@ -7,13 +7,13 @@ import { cookies } from "next/headers";
 // (todo) - why do we use form data instead of just passing data as it is?
 
 export async function setUserRole(formData: FormData) {
-  const token = (await cookies()).get("token")?.value;
-  if (!token) throw Error("Unauthorized");
   const role = formData.get("role");
   if (!role) throw Error("Role is Required");
   if (role != "student" && role != "consultant") throw Error("Role is invalid");
 
   try {
+    const token = (await cookies()).get("token")?.value;
+    if (!token) throw Error("Unauthorized");
     if (role == "student") {
       const res = await api.patch<OnboardingResponse>(
         "/student/onboarding",

@@ -8,7 +8,7 @@ interface Props {
 
 const AuthLayout: React.FC<Props> = ({ children }) => {
   return (
-    <section className="flex flex-col items-center justify-center py-20 -mt-5">
+    <section className="flex flex-col items-center justify-center py-20 -mt-5 sm:-mt-10 lg:-mt-20 px-4">
       <div className="w-20 h-20">
         <Link href={"/"}>
           <Image

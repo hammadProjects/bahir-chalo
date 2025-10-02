@@ -37,7 +37,7 @@ const ConsultantCard: React.FC<Props> = ({ data }) => {
             </Badge>
           </div>
           <p className="text-muted-foreground text-sm mb-2">
-            4 years experience
+            {data?.consultantProfile?.experience} years experience
           </p>
           <p className="text-muted-foreground text-sm mb-4">
             {data?.consultantProfile?.bio}

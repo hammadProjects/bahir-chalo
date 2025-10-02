@@ -49,9 +49,18 @@ export interface Consultant {
     bio: string;
     certificateUrl: string;
     status: "pending" | "approved" | "rejected";
+    experience: number;
   };
   createdAt: Date;
   updatedAt: Date;
+}
+
+export interface Availability {
+  _id: string;
+  consultantId: string;
+  startTime: Date;
+  endTime: Date;
+  isBooked: boolean;
 }
 
 // Backend Response Types

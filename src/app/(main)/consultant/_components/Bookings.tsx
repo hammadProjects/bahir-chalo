@@ -42,11 +42,13 @@ const Bookings = () => {
               <div className="bg-amber-600/20 text-amber-700 p-1 rounded-sm text-sm w-fit">
                 SCHEDULED
               </div>
-              <div>
+              <div className="flex items-center gap-2">
                 <Button>
                   <CheckCircle /> Complete
                 </Button>
-                <Button variant={"outline"}>View Details</Button>
+                <Button className="py-1" variant={"outline"}>
+                  View Details
+                </Button>
               </div>
             </div>
           </CardContent>

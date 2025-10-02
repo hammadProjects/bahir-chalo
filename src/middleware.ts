@@ -5,6 +5,8 @@ import { allowedRoutes, redirectTo } from "./lib/utils";
 
 export const middleware = async (req: NextRequest) => {
   const cookieStore = await cookies();
+  const response = NextResponse.next();
+  response.headers.set("x-current-pathname", req.nextUrl.pathname);
 
   if (!cookieStore.get("token")) return redirectTo(req, "/sign-in");
 
@@ -29,7 +31,7 @@ export const middleware = async (req: NextRequest) => {
     return redirectTo(req, roleRoutes[0] || "/sign-in");
   }
 
-  return NextResponse.next();
+  return;
 };
 
 export const config: MiddlewareConfig = {
