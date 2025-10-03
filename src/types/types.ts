@@ -38,19 +38,34 @@ export interface UserRoleFormData {
   role: Role;
 }
 
-export interface Consultant {
+export interface UserSchema {
   _id: string;
   username: string;
   email: string;
   otpVerified: boolean;
   role: "student" | "consultant" | "admin" | "unassigned";
   credits: number;
+
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface Consultant extends UserSchema {
   consultantProfile: {
     bio: string;
     certificateUrl: string;
     status: "pending" | "approved" | "rejected";
     experience: number;
   };
+}
+
+export interface BookingSchema {
+  _id: string;
+  availabilityId: Availability;
+  consultantId: Consultant;
+  studentId: UserSchema;
+  status: "scheduled" | "completed" | "cancelled";
+  notes: string;
   createdAt: Date;
   updatedAt: Date;
 }

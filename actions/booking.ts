@@ -2,7 +2,7 @@
 
 import { generateError } from "@/lib/utils";
 import api from "@/services/api";
-import { UseFetchData } from "@/types/types";
+import { BookingSchema, UseFetchData } from "@/types/types";
 import { cookies } from "next/headers";
 
 export const BookAppointment = async (formData: FormData) => {
@@ -29,5 +29,20 @@ export const BookAppointment = async (formData: FormData) => {
     console.log(error?.response);
     const message = generateError(error);
     return { success: false, message };
+  }
+};
+
+export const getBookings = async () => {
+  try {
+    const token = (await cookies()).get("token")?.value;
+    if (!token) throw Error("Unauthorized");
+
+    const res = await api.get("/booking/mine", {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    return res.data?.data?.bookings as BookingSchema[];
+  } catch (error) {
+    console.log(error);
   }
 };

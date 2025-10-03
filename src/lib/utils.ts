@@ -46,3 +46,6 @@ export const generateError = (error: unknown) => {
   }
   return message;
 };
+
+export const getCurrentTime = (date: string) => date.slice(11, 16);
+export const getDate = (date: string) => date.slice(0, 10);
