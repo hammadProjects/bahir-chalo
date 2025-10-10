@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/form";
 import { ChevronLeft, Loader2 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { UseFetchData } from "@/types/types";
 
 const consultantSchema = z.object({
   proofOfWork: z
@@ -32,7 +33,7 @@ type ConsultantFormValues = z.infer<typeof consultantSchema>;
 interface Props {
   prevStep: () => void;
   loading: boolean;
-  submitUserRole: (...args: unknown[]) => Promise<unknown>;
+  submitUserRole: (formData: FormData) => Promise<void | UseFetchData>;
 }
 
 const ConsultantOnboardingPage: React.FC<Props> = ({

@@ -6,7 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getBookings } from "../../../../actions/booking";
 
 const ConsultantDashboard = () => {
-  const { data, isLoading, isError } = useQuery({
+  const { data, isLoading } = useQuery({
     queryFn: getBookings,
     queryKey: ["get-bookings"], //Array according to Documentation
   });

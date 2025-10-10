@@ -1,4 +1,5 @@
 import { Badge } from "@/components/ui/badge";
+import { Card, CardContent } from "@/components/ui/card";
 import { Consultant } from "@/types/types";
 import { User } from "lucide-react";
 
@@ -22,31 +23,30 @@ const VerifiedConsulants: React.FC<Props> = ({ data }) => {
             const isSuspended =
               consultant.consultantProfile.status === "rejected" ? true : false;
             return (
-              <div
-                key={consultant.email}
-                className="bg-gray-200 rounded-sm px-4 py-6 flex justify-between"
-              >
-                <div className="flex items-center gap-4">
-                  <User className="w-10 h-10 p-2 rounded-md bg-gradient-to-r from-emerald-300 to-emerald-100 text-emerald-600" />
-                  <div>
-                    <h3 className="font-semibold">{consultant.username}</h3>
-                    <p className="text-sm">
-                      {consultant?.consultantProfile?.experience} years
-                      experience
-                    </p>
+              <Card key={consultant.email}>
+                <CardContent className="flex justify-between">
+                  <div className="flex items-center gap-4">
+                    <User className="w-10 h-10 p-2 rounded-md bg-gradient-to-r from-emerald-300 to-emerald-100 text-emerald-600" />
+                    <div>
+                      <h3 className="font-semibold">{consultant.username}</h3>
+                      <p className="text-sm">
+                        {consultant?.consultantProfile?.experience} years
+                        experience
+                      </p>
+                    </div>
                   </div>
-                </div>
 
-                <Badge
-                  className={`h-6 ${
-                    isSuspended
-                      ? "bg-red-500/15 text-red-600"
-                      : "bg-emerald-500/15 text-emerald-600"
-                  }`}
-                >
-                  {isSuspended ? "Suspended" : "Approved"}
-                </Badge>
-              </div>
+                  <Badge
+                    className={`h-6 ${
+                      isSuspended
+                        ? "bg-red-500/15 text-red-600"
+                        : "bg-emerald-500/15 text-emerald-600"
+                    }`}
+                  >
+                    {isSuspended ? "Suspended" : "Approved"}
+                  </Badge>
+                </CardContent>
+              </Card>
             );
           })
         )}

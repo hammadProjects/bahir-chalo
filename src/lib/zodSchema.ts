@@ -9,7 +9,7 @@ export const signUpSchema = z.object({
     .string("Please Enter a Valid Name")
     .min(4, "Password must be atleast 4 Characters")
     .optional(),
-  picture: z.file().optional(),
+  // picture: z.file().optional(),
 });
 
 export const signInSchema = z.object({

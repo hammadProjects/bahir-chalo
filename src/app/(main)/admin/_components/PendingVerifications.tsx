@@ -1,14 +1,6 @@
 "use client";
 import { Badge } from "@/components/ui/badge";
-import {
-  Check,
-  ExternalLink,
-  Loader,
-  Medal,
-  Star,
-  User,
-  X,
-} from "lucide-react";
+import { ExternalLink, Medal, Star, User } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -21,9 +13,12 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import Link from "next/link";
 import { Consultant } from "@/types/types";
-import { useState } from "react";
 import verifyConsultant from "../../../../../actions/admin";
 import { Card, CardContent } from "@/components/ui/card";
+import { BarLoader } from "react-spinners";
+import useFetch from "@/hooks/useFetch";
+import { format } from "date-fns";
+import Shimmer from "./Shimmer";
 
 interface Props {
   data: Consultant[];
@@ -31,7 +26,13 @@ interface Props {
 }
 
 const PendingVerifications: React.FC<Props> = ({ data, ApiLoading }) => {
-  const [loading, setLoading] = useState(false);
+  const { loading, fn: changeStatus } = useFetch(verifyConsultant);
+  const handleClick = (
+    consultantId: string,
+    status: "approved" | "rejected"
+  ) => {
+    changeStatus(consultantId, status);
+  };
 
   return (
     <section className="shadow-xl bg-gray-100 p-4 rounded-md h-full">
@@ -42,9 +43,7 @@ const PendingVerifications: React.FC<Props> = ({ data, ApiLoading }) => {
 
       <div className="space-y-4 mt-4">
         {ApiLoading ? (
-          <div className="flex items-center justify-center min-h-[200px]">
-            <Loader className="animate-spin" />
-          </div>
+          <Shimmer />
         ) : data.length === 0 ? (
           <h2>No Pending Verifications</h2>
         ) : (
@@ -94,7 +93,9 @@ const PendingVerifications: React.FC<Props> = ({ data, ApiLoading }) => {
                           <h3 className="text-sm font-bold">
                             Application Date
                           </h3>
-                          <p>{`${consultant.createdAt}`}</p>
+                          <p>
+                            {format(new Date(consultant.createdAt), "MM-dd-yy")}
+                          </p>
                         </div>
                       </div>
                       <Separator />
@@ -109,7 +110,9 @@ const PendingVerifications: React.FC<Props> = ({ data, ApiLoading }) => {
                           <h4 className="text-sm font-bold">
                             Years of experience
                           </h4>
-                          <p>3 Years</p>
+                          <p>
+                            {consultant?.consultantProfile?.experience} Years
+                          </p>
                         </div>
                         <div>
                           <h4 className="text-sm font-bold">Credentials</h4>
@@ -134,46 +137,31 @@ const PendingVerifications: React.FC<Props> = ({ data, ApiLoading }) => {
                         <p>{consultant.consultantProfile.bio}</p>
                       </div>
 
+                      <BarLoader
+                        width={"100%"}
+                        loading={loading}
+                        color="#16A34A"
+                      />
+
                       <div className="flex justify-between md:mt-6">
                         <Button
                           onClick={() =>
-                            verifyConsultant(
-                              consultant._id,
-                              "rejected",
-                              setLoading
-                            )
+                            handleClick(consultant._id, "rejected")
                           }
                           disabled={loading}
                           className="bg-red-600/80 hover:bg-red-600/70"
                           variant={"destructive"}
                         >
-                          {loading ? (
-                            <Loader className="animate-spin" />
-                          ) : (
-                            <>
-                              <X /> Reject
-                            </>
-                          )}
+                          Reject
                         </Button>
                         <Button
                           disabled={loading}
                           onClick={() =>
-                            verifyConsultant(
-                              consultant._id,
-                              "approved",
-                              setLoading
-                            )
+                            handleClick(consultant._id, "approved")
                           }
                           className="bg-emerald-500/90 hover:bg-emerald-500/80"
                         >
-                          {loading ? (
-                            <Loader className="animate-spin" />
-                          ) : (
-                            <>
-                              <Check />
-                              Approve
-                            </>
-                          )}
+                          Approve
                         </Button>
                       </div>
                     </DialogContent>

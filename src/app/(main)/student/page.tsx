@@ -7,7 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getBookings } from "../../../../actions/booking";
 
 const StudentDashboard = () => {
-  const { data, isLoading, isError } = useQuery({
+  const { data } = useQuery({
     queryFn: getBookings,
     queryKey: ["get-bookings"], //Array according to Documentation
   });

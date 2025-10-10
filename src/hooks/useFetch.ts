@@ -5,13 +5,16 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
 
-const useFetch = (cb: (...args: unknown[]) => Promise<UseFetchData>) => {
+export default function useFetch<
+  Args extends unknown[],
+  Return extends UseFetchData
+>(cb: (...args: Args) => Promise<Return>) {
   const [data, setData] = useState<UseFetchData | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
-  const fn = async (...args: unknown[]) => {
+  const fn: (...args: Args) => Promise<void> = async (...args) => {
     setLoading(true);
     setError(null);
 
@@ -44,5 +47,4 @@ const useFetch = (cb: (...args: unknown[]) => Promise<UseFetchData>) => {
   };
 
   return { loading, error, data, fn };
-};
-export default useFetch;
+}

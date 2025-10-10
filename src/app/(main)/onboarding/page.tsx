@@ -6,7 +6,6 @@ import useFetch from "@/hooks/useFetch";
 import { GraduationCap, Users } from "lucide-react";
 import React, { useState } from "react";
 import ConsultantOnboardingPage from "./_components/ConsultantOnboardingPage";
-import { UseFetchData } from "@/types/types";
 
 const OnboardingPage = () => {
   const [onboardingStep, setOnboardingStep] = useState(0);

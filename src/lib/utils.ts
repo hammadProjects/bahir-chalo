@@ -1,8 +1,6 @@
-import { Role } from "@/types/types";
 import { clsx, type ClassValue } from "clsx";
 import { NextRequest, NextResponse } from "next/server";
 import { twMerge } from "tailwind-merge";
-import { publicRoutes } from "./data";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));

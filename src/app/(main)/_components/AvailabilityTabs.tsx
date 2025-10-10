@@ -20,7 +20,7 @@ interface Props {
 
 const AvailabilityTabs: React.FC<Props> = ({ availabilities }) => {
   const [notes, setNotes] = useState("");
-  const { loading, data, fn: BookingAppointment } = useFetch(BookAppointment);
+  const { loading, fn: BookingAppointment } = useFetch(BookAppointment);
   const dates = Object.keys(availabilities);
   return (
     <Tabs className="gap-2" defaultValue={dates[0]}>
@@ -81,7 +81,7 @@ const AvailabilityTabs: React.FC<Props> = ({ availabilities }) => {
                       <Loader2 className="animate-spin" />
                     ) : (
                       <>
-                        <Calendar /> "Book Appointment"
+                        <Calendar /> Book Appointment
                       </>
                     )}
                   </Button>

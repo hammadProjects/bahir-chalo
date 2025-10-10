@@ -28,20 +28,17 @@ interface Props {
   ) => Promise<{ success: boolean; message: string; url?: string }>;
 }
 
-const getSchema = (type: "sign-in" | "sign-up") => {
-  return type === "sign-up" ? signUpSchema : signInSchema;
-};
-
 const AuthForm: React.FC<Props> = ({ type, action }) => {
   const { push } = useRouter();
   const [message, formAction, isPending] = useActionState(action, null);
 
-  const schema = getSchema(type);
-  const form = useForm<z.infer<typeof schema>>({
-    resolver: zodResolver(schema),
+  const form = useForm<
+    z.infer<typeof signUpSchema> | z.infer<typeof signInSchema>
+  >({
+    resolver: zodResolver(type === "sign-up" ? signUpSchema : signInSchema),
     defaultValues: {
       email: "",
-      // username: "",
+      username: "",
       password: "",
     },
   });
@@ -59,7 +56,7 @@ const AuthForm: React.FC<Props> = ({ type, action }) => {
     <div>
       <Form {...form}>
         <form action={formAction} className="space-y-8">
-          {/* {type === "sign-up" && (
+          {type === "sign-up" && (
             <FormField
               control={form.control}
               name="username"
@@ -73,7 +70,7 @@ const AuthForm: React.FC<Props> = ({ type, action }) => {
                 </FormItem>
               )}
             />
-          )} */}
+          )}
 
           <FormField
             control={form.control}

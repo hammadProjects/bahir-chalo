@@ -77,8 +77,7 @@ export const registerUserAction = async (
       };
 
     const payload = {
-      // username: FormData.get("username"),
-      username: "Random Username",
+      username: FormData.get("username"),
       email: FormData.get("email"),
       password: FormData.get("password"),
     };

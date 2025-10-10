@@ -87,5 +87,5 @@ export interface OnboardingResponse {
 export interface UseFetchData {
   success: boolean;
   message: string;
-  url: string;
+  url?: string;
 }

@@ -56,9 +56,11 @@ const Header = async () => {
             <Link href={"/#pricing"}>Pricing</Link>
           </Button>
           <div className="flex items-center">
-            <p className="text-sm font-bold border-1 border-emerald-400 py-1 px-2 rounded-sm hover:scale-105 transition-all cursor-pointer">
-              🪙 {credits} Credits
-            </p>
+            {role !== "admin" && (
+              <p className="text-sm font-bold border-1 border-emerald-400 py-1 px-2 rounded-sm hover:scale-105 transition-all cursor-pointer">
+                🪙 {credits} Credits
+              </p>
+            )}
             <Button
               variant={"link"}
               className=" hover:text-emerald-700/80"
