@@ -10,7 +10,7 @@ const Header = async () => {
   const { success, role, user } = await verifyAuth();
   const headersList = await headers();
   const pathname = headersList.get("x-current-pathname") || "";
-  const hideHeader = publicRoutes.includes(pathname);
+  const hideHeader = !publicRoutes.includes(pathname);
 
   let dashboardUrl = "/sign-in";
   if (success)
@@ -30,11 +30,8 @@ const Header = async () => {
       ? "Dashboard"
       : "Sign In";
 
-  const credits =
-    role === "student" || role === "consultant" ? user?.credits : null;
-
   return (
-    !hideHeader && (
+    hideHeader && (
       <header className="h-16 px-10">
         <div className="flex justify-between items-center">
           <div className="w-20 h-16">
@@ -56,9 +53,9 @@ const Header = async () => {
             <Link href={"/#pricing"}>Pricing</Link>
           </Button>
           <div className="flex items-center">
-            {role !== "admin" && (
-              <p className="text-sm font-bold border-1 border-emerald-400 py-1 px-2 rounded-sm hover:scale-105 transition-all cursor-pointer">
-                🪙 {credits} Credits
+            {(role === "student" || role === "consultant") && (
+              <p className="hidden sm:block text-sm font-bold border-1 border-emerald-400 py-1 px-2 rounded-sm hover:scale-105 transition-all cursor-pointer">
+                🪙 {user?.credits} Credits
               </p>
             )}
             <Button

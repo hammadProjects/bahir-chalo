@@ -6,24 +6,35 @@ import { Clock, FileText, Medal, ChevronDown, ChevronUp } from "lucide-react";
 import React, { useState } from "react";
 import BackButton from "@/components/common/BackButton";
 import { useParams } from "next/navigation";
-import { useQuery } from "@tanstack/react-query";
+import { useQueries } from "@tanstack/react-query";
 import { getConsultantById } from "../_api/getConsultantById";
 import ByIdShimmer from "../_components/ByIdShimmer";
 import AvailabilityTabs from "../../_components/AvailabilityTabs";
+import { getAvailableTimeSlots } from "../../../../../actions/student";
 
 const ConsultantProfile = () => {
   const { slug } = useParams<{ slug: string }>();
+  const [show, setShow] = useState(false);
+
   // if id are different it considers them different - if same it caches it
-  const { data, isLoading } = useQuery({
-    queryKey: ["consultant-by-id", slug],
-    queryFn: ({ queryKey }) => getConsultantById(queryKey[1]),
+  const [consultantById, availableSlots] = useQueries({
+    queries: [
+      {
+        queryKey: ["consultant-by-id", slug],
+        queryFn: ({ queryKey }: { queryKey: string[] }) =>
+          getConsultantById(queryKey[1]),
+      },
+      {
+        queryKey: ["consultant-available-slots", slug],
+        queryFn: ({ queryKey }: { queryKey: string[] }) =>
+          getAvailableTimeSlots(queryKey[1]),
+      },
+    ],
   });
 
-  if (!isLoading) {
-    console.log("Data from consultants Page", data);
-  }
+  const { isLoading, data } = consultantById;
+  const { data: slots } = availableSlots;
 
-  const [show, setShow] = useState(false);
   return isLoading ? (
     <ByIdShimmer />
   ) : (
@@ -39,7 +50,7 @@ const ConsultantProfile = () => {
         </h1>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-        <Card className="bg-muted/5 border-emerald-400/10 h-fit">
+        <Card className="col-span-1 bg-muted/5 border-emerald-400/10 h-fit">
           <CardContent className="flex flex-col items-center pt-10">
             <div className="h-28 w-28 rounded-full bg-red-100" />
             {/* <Image
@@ -90,7 +101,7 @@ const ConsultantProfile = () => {
                 </h5>
                 <p className="text-muted-foreground mt-3">
                   {data?.totalAvailabilities} time slots available for booking
-                  over the next 7 days
+                  over the next 4 days
                 </p>
               </div>
             </CardContent>
@@ -103,18 +114,15 @@ const ConsultantProfile = () => {
                   Select a time slot and provide details for your consultation
                 </p>
 
-                {data?.totalAvailabilities === 0 ? (
+                {slots?.timeSlots === 0 ? (
                   <div>
                     <h2 className="text-2xl font-semibold text-center">
-                      {data?.consultant?.username} have 0 Availability
+                      {data?.consultant?.username} have no Availability for next
+                      7 days
                     </h2>
                   </div>
                 ) : (
-                  <div>
-                    <AvailabilityTabs
-                      availabilities={data?.availabilities || {}}
-                    />
-                  </div>
+                  <AvailabilityTabs availabilities={slots?.timeSlots || {}} />
                 )}
               </CardContent>
             </Card>

@@ -75,7 +75,13 @@ export interface Availability {
   consultantId: string;
   startTime: Date;
   endTime: Date;
-  isBooked: boolean;
+}
+
+export interface TimeSlot {
+  availabilityId: string;
+  consultantId: string;
+  startTime: Date;
+  endTime: Date;
 }
 
 // Backend Response Types

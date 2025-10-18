@@ -13,8 +13,6 @@ export const getConsultantById = async (id: string) => {
       headers: { Authorization: `Bearer ${token}` },
     });
 
-    console.log("APi being called");
-
     return data.data?.data as {
       consultant: Consultant;
       availabilities: Record<string, Availability[]>;

@@ -1,26 +1,41 @@
 "use client";
 import { TabsContent } from "@radix-ui/react-tabs";
-import Availability from "./_components/Availability";
+import Availability from "./_components/ConsultantAvailability";
 import Bookings from "./_components/Bookings";
-import { useQuery } from "@tanstack/react-query";
+import { useQueries } from "@tanstack/react-query";
 import { getBookings } from "../../../../actions/booking";
+import { getAvailabilities } from "../../../../actions/consultant";
 
 const ConsultantDashboard = () => {
-  const { data, isLoading } = useQuery({
-    queryFn: getBookings,
-    queryKey: ["get-bookings"], //Array according to Documentation
+  const [bookings, availabilities] = useQueries({
+    queries: [
+      {
+        queryFn: getBookings,
+        queryKey: ["get-bookings"], //Array according to Documentation
+      },
+      {
+        queryFn: getAvailabilities,
+        queryKey: ["get-availabilities"],
+      },
+    ],
   });
 
-  if (data && !isLoading) console.log("data from page.tsx", data);
+  const refetchAvailability = async () => {
+    await availabilities.refetch();
+  };
 
   return (
     <>
       <TabsContent value="earnings">Earnings</TabsContent>
       <TabsContent value="bookings">
-        <Bookings data={data || []} />
+        <Bookings data={bookings.data || []} />
       </TabsContent>
       <TabsContent value="availability">
-        <Availability />
+        <Availability
+          isLoading={availabilities.isLoading}
+          availability={availabilities.data?.availability || null}
+          refetch={refetchAvailability}
+        />
       </TabsContent>
     </>
   );

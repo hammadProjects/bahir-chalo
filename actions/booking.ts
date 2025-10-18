@@ -1,7 +1,7 @@
 "use server";
 
-import { generateError } from "@/lib/utils";
 import api from "@/services/api";
+import { generateError } from "@/lib/utils";
 import { BookingSchema, UseFetchData } from "@/types/types";
 import { cookies } from "next/headers";
 
@@ -11,24 +11,30 @@ export const BookAppointment = async (formData: FormData) => {
     if (!token) throw Error("Unauthorized");
 
     const availabilityId = formData.get("availabilityId");
+    const startTime = formData.get("startTime");
+    const endTime = formData.get("endTime");
 
-    if (!availabilityId)
-      throw Error("Consultant ID and Availability ID are required");
+    if (!availabilityId || !startTime || !endTime)
+      throw Error("AvailabilityId, startTime, and endTime are Required");
 
-    const payload = { notes: formData.get("notes") };
+    const payload = {
+      notes: formData.get("notes"),
+      startTime: new Date(startTime as string),
+      endTime: new Date(endTime as string),
+      // startTime: "2025-10-14T19:30:00.299+00:00",
+      // endTime: "2025-10-14T20:00:00.299+00:00",
+      availabilityId,
+    };
 
     const res = await api.post(`/booking/${availabilityId}`, payload, {
       withCredentials: true,
       headers: { Authorization: `Bearer ${token}` },
     });
 
-    console.log("Coming over herr huh", res.data);
-
     return { success: true, message: res.data?.message } as UseFetchData;
   } catch (error: any) {
     console.log(error?.response);
-    const message = generateError(error);
-    return { success: false, message };
+    return { success: false, message: generateError(error) };
   }
 };
 

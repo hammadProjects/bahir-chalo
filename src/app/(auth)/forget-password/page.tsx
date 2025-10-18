@@ -11,6 +11,8 @@ const ForgetPasswordPage = () => {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
 
+  console.dir(<h1 className="name">this is the name</h1>);
+
   return (
     <AuthPage
       title="Forget Password"

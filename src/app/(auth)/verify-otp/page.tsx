@@ -7,9 +7,10 @@ import { Button } from "@/components/ui/button";
 import { otpResendAction, verifyOtpAction } from "../../../../actions/auth";
 import { LoaderCircleIcon } from "lucide-react";
 import { toast } from "sonner";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 const VerifyOtpPage = () => {
+  const { push } = useRouter();
   const [otp, setOtp] = useState("");
   const [message, formAction, isPending] = useActionState(
     verifyOtpAction,
@@ -24,7 +25,7 @@ const VerifyOtpPage = () => {
   useEffect(() => {
     if (message?.success) {
       toast.success(message.message);
-      if (message?.url) redirect(message.url);
+      if (message?.url) push(message.url);
     } else if (message?.success == false) toast.error(message?.message);
   }, [message]);
 

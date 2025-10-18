@@ -1,4 +1,5 @@
 import { clsx, type ClassValue } from "clsx";
+import { format } from "date-fns";
 import { NextRequest, NextResponse } from "next/server";
 import { twMerge } from "tailwind-merge";
 
@@ -47,3 +48,20 @@ export const generateError = (error: unknown) => {
 
 export const getCurrentTime = (date: string) => date.slice(11, 16);
 export const getDate = (date: string) => date.slice(0, 10);
+
+export const convertTimeToDate = (timeStr: string) => {
+  // have to convert it into date
+  const [hours, minutes] = timeStr.split(":").map(Number);
+  const now = new Date();
+  const date = new Date(
+    now.getFullYear(),
+    now.getMonth(),
+    now.getDate(),
+    hours,
+    minutes
+  );
+  return date;
+};
+
+export const formatDateInHours = (date: Date | null) =>
+  date && format(new Date(date), "hh:mm a");

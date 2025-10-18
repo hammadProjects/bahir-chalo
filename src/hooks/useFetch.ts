@@ -5,11 +5,12 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
 
+// Where are we getting Args and Return from?
 export default function useFetch<
   Args extends unknown[],
   Return extends UseFetchData
 >(cb: (...args: Args) => Promise<Return>) {
-  const [data, setData] = useState<UseFetchData | null>(null);
+  const [data, setData] = useState<Return | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
