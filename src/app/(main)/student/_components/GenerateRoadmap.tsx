@@ -1,36 +1,36 @@
 "use client";
-import { Button } from "@/components/ui/button";
+// import { Button } from "@/components/ui/button";
 import {
   Card,
-  CardContent,
+  // CardContent,
   CardDescription,
-  CardFooter,
+  // CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { RoadmapArray } from "@/lib/data";
-import { ChevronLeft, ChevronRight } from "lucide-react";
-import { useState } from "react";
+// import { RoadmapArray } from "@/lib/data";
+// import { ChevronLeft, ChevronRight } from "lucide-react";
+// import { useState } from "react";
 
 const GenerateRoadmap = () => {
-  const [currentSectionIndex, setCurrentSectionIndex] = useState(0);
+  // const [currentSectionIndex, setCurrentSectionIndex] = useState(0);
 
-  const currentSection = RoadmapArray[currentSectionIndex];
+  // const currentSection = RoadmapArray[currentSectionIndex];
 
-  const handleNext = () => {
-    if (currentSectionIndex < RoadmapArray.length - 1) {
-      setCurrentSectionIndex(currentSectionIndex + 1);
-    }
-  };
+  // const handleNext = () => {
+  //   if (currentSectionIndex < RoadmapArray.length - 1) {
+  //     setCurrentSectionIndex(currentSectionIndex + 1);
+  //   }
+  // };
 
-  const handlePrev = () => {
-    if (currentSectionIndex > 0) {
-      setCurrentSectionIndex(currentSectionIndex - 1);
-    }
-  };
+  // const handlePrev = () => {
+  //   if (currentSectionIndex > 0) {
+  //     setCurrentSectionIndex(currentSectionIndex - 1);
+  //   }
+  // };
 
   return (
-    <Card className="min-h-screen">
+    <Card>
       <CardHeader>
         <CardTitle>Generate Roadmaps</CardTitle>
         <CardDescription>
@@ -39,7 +39,7 @@ const GenerateRoadmap = () => {
         </CardDescription>
       </CardHeader>
 
-      <CardContent className="h-full">
+      {/* <CardContent className="h-full">
         <Card className="md:w-3/4 md:mx-auto">
           <CardHeader>
             <CardTitle className="text-center text-2xl">
@@ -48,7 +48,7 @@ const GenerateRoadmap = () => {
             </CardTitle>
           </CardHeader>
 
-          <CardContent className="space-y-4">
+          <CardContent className="space-y-4 max-h-[400px]">
             {currentSection.items.map((item, index) => (
               <Card key={index} className="bg-muted/40 p-4">
                 {Object.entries(item).map(([key, value]) => (
@@ -90,7 +90,7 @@ const GenerateRoadmap = () => {
             </Button>
           </CardFooter>
         </Card>
-      </CardContent>
+      </CardContent> */}
     </Card>
   );
 };

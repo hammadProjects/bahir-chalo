@@ -1,6 +1,7 @@
 "use server";
 import { generateError } from "@/lib/utils";
 import api from "@/services/api";
+import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 
 export const loginUserAction = async (
@@ -103,6 +104,11 @@ export const registerUserAction = async (
       message: error?.response?.data?.message || "Something Went Wrong",
     };
   }
+};
+
+export const logutAction = async () => {
+  (await cookies()).delete("token");
+  redirect("/sign-in");
 };
 
 export const verifyOtpAction = async (

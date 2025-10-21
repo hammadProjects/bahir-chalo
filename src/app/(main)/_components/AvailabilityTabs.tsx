@@ -60,8 +60,11 @@ const AvailabilityTabs: React.FC<Props> = ({ availabilities }) => {
                         className={`border-[1px] border-emerald-400 h-14 rounded-lg flex items-center 
                   justify-center hover:scale-105 transition-all cursor-pointer font-bold`}
                       >
-                        {`${startTime}`.slice(11, 16)} -{" "}
-                        {`${endTime}`.slice(11, 16)}
+                        {`${new Date(startTime).getHours()} : ${new Date(
+                          startTime
+                        ).getMinutes()} `}{" "}
+                        - {new Date(endTime).getHours()} :
+                        {new Date(endTime).getMinutes()}
                       </Button>
                     </DialogTrigger>
                     <DialogContent className="md:w-[780px]">

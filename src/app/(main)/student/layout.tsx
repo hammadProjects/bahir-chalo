@@ -23,8 +23,8 @@ const StudentDashboardLayout: React.FC<Props> = ({ children }) => {
         </h1>
         <Tabs
           // defaultValue="my-roadmaps"
-          defaultValue="generate-roadmaps"
-          // defaultValue="booked-appointments"
+          // defaultValue="generate-roadmaps"
+          defaultValue="booked-appointments"
           className="flex flex-col md:flex-row gap-8"
         >
           <TabsList className="w-full md:w-[400px] h-[100px] flex flex-col">

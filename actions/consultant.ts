@@ -43,8 +43,6 @@ export const getAvailabilities = async () => {
       headers: { Authorization: `Bearer ${token}` },
     });
 
-    console.log("from getAvailabilities", res.data?.data?.availability);
-
     return {
       success: true,
       message: "Availability Fetched Successfully",

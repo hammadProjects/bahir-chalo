@@ -7,7 +7,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { getCurrentTime, getDate } from "@/lib/utils";
+import { getCurrentDate, getCurrentTime } from "@/lib/utils";
 import { BookingSchema } from "@/types/types";
 import { Calendar, CheckCircle, Clock, User } from "lucide-react";
 
@@ -46,17 +46,17 @@ const Bookings: React.FC<Props> = ({ data }) => {
                     </p>
                     <p className="flex items-center gap-2 text-muted-foreground">
                       <Calendar className="w-4 h-4" />
-                      {getDate(`${booking?.availabilityId?.startTime}`)}
+                      {getCurrentDate(booking?.startTime)}
                     </p>
                     <p className="flex items-center gap-2 text-muted-foreground">
                       <Clock className="w-4 h-4" />{" "}
-                      {getCurrentTime(`${booking?.availabilityId?.startTime}`)}{" "}
-                      -{getCurrentTime(`${booking?.availabilityId?.endTime}`)}
+                      {getCurrentTime(`${booking?.startTime}`)} -{" "}
+                      {getCurrentTime(`${booking?.endTime}`)}
                     </p>
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <div className="bg-amber-600/20 text-amber-700 p-1 rounded-sm text-sm w-fit">
+                  <div className="bg-amber-600/20 text-amber-700 p-1 rounded-sm text-xs w-fit">
                     SCHEDULED
                   </div>
                   <div className="flex items-center gap-2">

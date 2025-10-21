@@ -46,8 +46,8 @@ export const generateError = (error: unknown) => {
   return message;
 };
 
-export const getCurrentTime = (date: string) => date.slice(11, 16);
-export const getDate = (date: string) => date.slice(0, 10);
+export const getCurrentTime = (date: string) =>
+  format(new Date(date), "hh:mm a");
 
 export const convertTimeToDate = (timeStr: string) => {
   // have to convert it into date
@@ -65,3 +65,6 @@ export const convertTimeToDate = (timeStr: string) => {
 
 export const formatDateInHours = (date: Date | null) =>
   date && format(new Date(date), "hh:mm a");
+
+export const getCurrentDate = (date: Date | null) =>
+  date && format(new Date(date), "dd MMM yyyy");

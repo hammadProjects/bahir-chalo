@@ -15,6 +15,8 @@ Backend:
 
 1. booked and expired availabilities are being sent in the frontend
 2. have to deal with required true with the consultantProfile thing
+3. Add pagination in getbookings
+4. Only scheduled appointments should not be sent as availability but cancelled will be shown
 
 Fixed:
 

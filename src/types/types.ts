@@ -64,11 +64,15 @@ export interface BookingSchema {
   availabilityId: Availability;
   consultantId: Consultant;
   studentId: UserSchema;
-  status: "scheduled" | "completed" | "cancelled";
+  status: BookingStatus;
   notes: string;
+  startTime: Date;
+  endTime: Date;
   createdAt: Date;
   updatedAt: Date;
 }
+
+export type BookingStatus = "SCHEDULED" | "CANCELED" | "COMPLETED";
 
 export interface Availability {
   _id: string;

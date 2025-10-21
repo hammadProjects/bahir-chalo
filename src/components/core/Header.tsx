@@ -5,6 +5,8 @@ import { verifyAuth } from "@/lib/verifyAuth";
 import { getDashboardUrl } from "@/lib/utils";
 import { headers } from "next/headers";
 import { publicRoutes } from "@/lib/data";
+import { LogOut } from "lucide-react";
+import { logutAction } from "../../../actions/auth";
 
 const Header = async () => {
   const { success, role, user } = await verifyAuth();
@@ -53,11 +55,6 @@ const Header = async () => {
             <Link href={"/#pricing"}>Pricing</Link>
           </Button>
           <div className="flex items-center">
-            {(role === "student" || role === "consultant") && (
-              <p className="hidden sm:block text-sm font-bold border-1 border-emerald-400 py-1 px-2 rounded-sm hover:scale-105 transition-all cursor-pointer">
-                🪙 {user?.credits} Credits
-              </p>
-            )}
             <Button
               variant={"link"}
               className=" hover:text-emerald-700/80"
@@ -65,6 +62,21 @@ const Header = async () => {
             >
               <Link href={dashboardUrl}>{btnText}</Link>
             </Button>
+            {success && (role === "student" || role === "consultant") && (
+              <p className="hidden sm:block text-sm font-bold border-1 border-emerald-400 py-1 px-2 rounded-sm hover:scale-105 transition-all cursor-pointer">
+                🪙 {user?.credits} Credits
+              </p>
+            )}
+            {success && (
+              <form action={logutAction}>
+                <Button
+                  className="hover:text-emerald-600 transition-all"
+                  variant={"link"}
+                >
+                  <LogOut />
+                </Button>
+              </form>
+            )}
           </div>
         </div>
       </header>

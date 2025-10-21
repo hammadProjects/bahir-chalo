@@ -7,10 +7,14 @@ import { useQuery } from "@tanstack/react-query";
 import { getBookings } from "../../../../actions/booking";
 
 const StudentDashboard = () => {
-  const { data } = useQuery({
+  const { data, refetch } = useQuery({
     queryFn: getBookings,
     queryKey: ["get-bookings"], //Array according to Documentation
   });
+
+  const refetchAppointments = async () => {
+    await refetch();
+  };
 
   return (
     <>
@@ -21,7 +25,10 @@ const StudentDashboard = () => {
         <GenerateRoadmap />
       </TabsContent>
       <TabsContent value="booked-appointments">
-        <BookedAppointments data={data || []} />
+        <BookedAppointments
+          refetchAppointments={refetchAppointments}
+          data={data || []}
+        />
       </TabsContent>
     </>
   );
