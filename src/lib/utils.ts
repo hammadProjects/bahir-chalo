@@ -39,7 +39,10 @@ export const getDashboardUrl = (role: string, status?: string) => {
 export const generateError = (error: unknown) => {
   let message = "Something Went Wrong. Please try again";
 
-  if (error && typeof error === "object" && "response" in error) {
+  if (error && typeof error === "object" && "message" in error) {
+    const err = error as { message: string; success: boolean };
+    message = err.message;
+  } else if (error && typeof error === "object" && "response" in error) {
     const err = error as { response?: { data?: { message?: string } } };
     message = err.response?.data?.message || message;
   }
@@ -68,3 +71,11 @@ export const formatDateInHours = (date: Date | null) =>
 
 export const getCurrentDate = (date: Date | null) =>
   date && format(new Date(date), "dd MMM yyyy");
+
+export const thinkingMessages = [
+  "🤔 Thinking about the best route for your journey abroad...",
+  "📚 Checking the top universities that fit your profile...",
+  "🧾 Preparing a personalized study roadmap...",
+  "✈️ Gathering visa and admission requirements...",
+  "💡 Almost there... something exciting is waiting for you!",
+];

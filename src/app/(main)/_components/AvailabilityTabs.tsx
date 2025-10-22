@@ -1,3 +1,4 @@
+"use client";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -11,8 +12,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import useFetch from "@/hooks/useFetch";
 import { TimeSlot } from "@/types/types";
 import { Calendar, Loader2 } from "lucide-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BookAppointment } from "../../../../actions/booking";
+import { useAppDispatch } from "@/redux/hooks";
 
 interface Props {
   availabilities: Record<string, TimeSlot[]>;
@@ -21,8 +23,15 @@ interface Props {
 const AvailabilityTabs: React.FC<Props> = ({ availabilities }) => {
   const [dialogOpen, setDialogOpen] = useState<string | null>(null);
   const [notes, setNotes] = useState("");
-  const { loading, fn: BookingAppointment } = useFetch(BookAppointment);
+  const { loading, fn: BookingAppointment, data } = useFetch(BookAppointment);
   const dates = Object.keys(availabilities);
+
+  useEffect(() => {
+    if (data?.success) {
+      console.log(data);
+    }
+  }, [data]);
+
   return dates.length === 0 ? (
     <>No Availabilities are available</>
   ) : (

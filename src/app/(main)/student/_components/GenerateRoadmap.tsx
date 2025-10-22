@@ -1,33 +1,46 @@
 "use client";
-// import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import {
   Card,
-  // CardContent,
+  CardContent,
   CardDescription,
-  // CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-// import { RoadmapArray } from "@/lib/data";
-// import { ChevronLeft, ChevronRight } from "lucide-react";
-// import { useState } from "react";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import useFetch from "@/hooks/useFetch";
+import { countries } from "@/lib/data";
+import { generateRoadmapAction } from "../../../../../actions/student";
+import { useEffect, useState } from "react";
+import StudyRoadmap from "./ShowRoadmap";
 
 const GenerateRoadmap = () => {
-  // const [currentSectionIndex, setCurrentSectionIndex] = useState(0);
+  const [selectedCountry, setSelectedCountry] = useState("");
+  const {
+    data,
+    loading,
+    fn: generateRoadmap,
+  } = useFetch(generateRoadmapAction);
 
-  // const currentSection = RoadmapArray[currentSectionIndex];
+  const handleGenerateRoadmap = (country: string) => {
+    if (loading) return;
+    const formData = new FormData();
+    formData.append("country", country);
+    generateRoadmap(formData);
+  };
 
-  // const handleNext = () => {
-  //   if (currentSectionIndex < RoadmapArray.length - 1) {
-  //     setCurrentSectionIndex(currentSectionIndex + 1);
-  //   }
-  // };
-
-  // const handlePrev = () => {
-  //   if (currentSectionIndex > 0) {
-  //     setCurrentSectionIndex(currentSectionIndex - 1);
-  //   }
-  // };
+  useEffect(() => {
+    console.log(data);
+    // console.log(data?.roadmap, typeof data?.roadmap);
+  }, [data]);
 
   return (
     <Card>
@@ -39,58 +52,41 @@ const GenerateRoadmap = () => {
         </CardDescription>
       </CardHeader>
 
-      {/* <CardContent className="h-full">
-        <Card className="md:w-3/4 md:mx-auto">
-          <CardHeader>
-            <CardTitle className="text-center text-2xl">
-              Step - {currentSectionIndex} / {RoadmapArray.length}{" "}
-              {currentSection.title}
-            </CardTitle>
-          </CardHeader>
-
-          <CardContent className="space-y-4 max-h-[400px]">
-            {currentSection.items.map((item, index) => (
-              <Card key={index} className="bg-muted/40 p-4">
-                {Object.entries(item).map(([key, value]) => (
-                  <div key={key} className="mb-2">
-                    <strong className="capitalize">
-                      {key.replace(/_/g, " ")}:
-                    </strong>{" "}
-                    {Array.isArray(value) ? (
-                      <ul className="list-disc list-inside">
-                        {value.map((v, i) => (
-                          <li key={i}>{v}</li>
-                        ))}
-                      </ul>
-                    ) : (
-                      <span>{value?.toString()}</span>
-                    )}
-                  </div>
-                ))}
-              </Card>
-            ))}
-          </CardContent>
-
-          <CardFooter className="flex justify-between mt-4">
-            <Button
-              onClick={handlePrev}
-              disabled={currentSectionIndex === 0}
-              size="icon"
-              className="rounded-full bg-emerald-400/90 hover:bg-emerald-400/70"
+      <CardContent>
+        {data?.roadmap ? (
+          <StudyRoadmap roadmap={data.roadmap} />
+        ) : loading ? (
+          "Please Wait, we are getting something for you..."
+        ) : (
+          <div className="flex gap-4">
+            <Select
+              value={selectedCountry}
+              onValueChange={(value) => setSelectedCountry(value)}
             >
-              <ChevronLeft />
-            </Button>
+              <SelectTrigger>
+                <SelectValue placeholder="Select your desired Country" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectLabel>Countries</SelectLabel>
+                  {countries.map((country) => (
+                    <SelectItem key={country} value={country.toLowerCase()}>
+                      {country}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+
             <Button
-              onClick={handleNext}
-              disabled={currentSectionIndex === RoadmapArray.length - 1}
-              size="icon"
-              className="rounded-full bg-emerald-400/90 hover:bg-emerald-400/70"
+              onClick={() => handleGenerateRoadmap(selectedCountry)}
+              disabled={!selectedCountry}
             >
-              <ChevronRight />
+              Generate Roadmap
             </Button>
-          </CardFooter>
-        </Card>
-      </CardContent> */}
+          </div>
+        )}
+      </CardContent>
     </Card>
   );
 };

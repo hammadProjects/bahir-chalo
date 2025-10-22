@@ -32,7 +32,11 @@ export const BookAppointment = async (formData: FormData) => {
       headers: { Authorization: `Bearer ${token}` },
     });
 
-    return { success: true, message: res.data?.message } as UseFetchData;
+    return {
+      success: true,
+      message: res.data?.message,
+      credits: res.data?.remainingCredits,
+    };
   } catch (error: any) {
     console.log(error?.response);
     return { success: false, message: generateError(error) };
