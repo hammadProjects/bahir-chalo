@@ -6,16 +6,17 @@ import useFetch from "@/hooks/useFetch";
 import { GraduationCap, Users } from "lucide-react";
 import React, { useState } from "react";
 import ConsultantOnboardingPage from "./_components/ConsultantOnboardingPage";
+import StudentOnboardingPage from "./_components/StudentOnboardingPage";
 
 const OnboardingPage = () => {
   const [onboardingStep, setOnboardingStep] = useState(0);
 
   const { fn: submitUserRole, loading } = useFetch(setUserRole);
-  const setStudentRole = () => {
-    const formData = new FormData();
-    formData.append("role", "student");
-    submitUserRole(formData);
-  };
+  // const setStudentRole = () => {
+  //   const formData = new FormData();
+  //   formData.append("role", "student");
+  //   submitUserRole(formData);
+  // };
 
   const prevStep = () => setOnboardingStep(0);
 
@@ -32,7 +33,7 @@ const OnboardingPage = () => {
             abroad journey.
           </p>
           <Button
-            onClick={setStudentRole}
+            onClick={() => setOnboardingStep(2)}
             disabled={loading}
             className="w-full bg-emerald-600/80 hover:bg-emerald-600/90 text-white"
           >
@@ -61,6 +62,12 @@ const OnboardingPage = () => {
         </CardContent>
       </Card>
     </div>
+  ) : onboardingStep === 2 ? (
+    <StudentOnboardingPage
+      loading={loading}
+      submitUserRole={submitUserRole}
+      prevStep={prevStep}
+    />
   ) : (
     onboardingStep === 1 && (
       <ConsultantOnboardingPage
