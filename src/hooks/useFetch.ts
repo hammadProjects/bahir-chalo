@@ -23,12 +23,11 @@ export default function useFetch<
       const response = await cb(...args);
       setData(response);
       setError(null);
-      // toast.success(response);
 
-      const { success, message, url } = response;
+      const { success, message, url, hideResponse } = response;
       if (!success) {
         toast.error(message);
-      } else {
+      } else if (hideResponse !== true) {
         toast.success(message);
       }
 

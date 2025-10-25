@@ -98,4 +98,5 @@ export interface UseFetchData {
   success: boolean;
   message: string;
   url?: string;
+  hideResponse?: boolean;
 }

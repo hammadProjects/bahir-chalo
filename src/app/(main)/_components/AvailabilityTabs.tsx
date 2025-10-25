@@ -14,7 +14,6 @@ import { TimeSlot } from "@/types/types";
 import { Calendar, Loader2 } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { BookAppointment } from "../../../../actions/booking";
-import { useAppDispatch } from "@/redux/hooks";
 
 interface Props {
   availabilities: Record<string, TimeSlot[]>;

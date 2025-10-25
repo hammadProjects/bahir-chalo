@@ -41,15 +41,32 @@ const StudentOnboardingPage: React.FC<Props> = ({
 }) => {
   const form = useForm<ConsultantFormValues>({
     resolver: zodResolver(consultantSchema),
-    defaultValues: {},
+    defaultValues: {
+      budget: "",
+      courses: "",
+      grades: "",
+      homeCountry: "",
+      itelsScore: "",
+      recentDegree: "",
+    },
   });
 
-  const onSubmit = (values: ConsultantFormValues) => {
+  const onSubmit = ({
+    budget,
+    courses,
+    grades,
+    homeCountry,
+    itelsScore,
+    recentDegree,
+  }: ConsultantFormValues) => {
     const formData = new FormData();
     formData.append("role", "student");
-    // formData.append("bio", values.bio);
-    // formData.append("certificateUrl", values.proofOfWork);
-    // formData.append("experience", values.experience);
+    formData.append("budget", budget);
+    formData.append("courses", courses);
+    formData.append("grades", grades);
+    formData.append("homeCountry", homeCountry);
+    formData.append("itelsScore", itelsScore);
+    formData.append("recentDegree", recentDegree);
     submitUserRole(formData);
   };
 
@@ -72,7 +89,7 @@ const StudentOnboardingPage: React.FC<Props> = ({
                   <FormControl>
                     <Input
                       placeholder="e.g., BSCS or Intermediate or DAE"
-                      onChange={(e) => field.onChange(e.target.files)}
+                      {...field}
                     />
                   </FormControl>
                   <FormMessage />
@@ -133,6 +150,20 @@ const StudentOnboardingPage: React.FC<Props> = ({
                       placeholder="e.g. 7 or NULL (if have not appeared)"
                       {...field}
                     />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="budget"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Budget in Lakhs</FormLabel>
+                  <FormControl>
+                    <Input placeholder="e.g. 45" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

@@ -7,7 +7,8 @@ const Footer = () => {
   const pathname = usePathname();
 
   return (
-    !publicRoutes.includes(pathname) && (
+    !publicRoutes.includes(pathname) &&
+    pathname == "/" && (
       <footer className="py-8 text-center bg-gray-100">
         <div>Made With 💖</div>
       </footer>

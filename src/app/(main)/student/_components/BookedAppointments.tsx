@@ -9,7 +9,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import useFetch from "@/hooks/useFetch";
-import { formatDateInHours, getCurrentDate, getCurrentTime } from "@/lib/utils";
+import { formatDateInHours, getCurrentDate } from "@/lib/utils";
 import { BookingSchema, BookingStatus } from "@/types/types";
 import { Calendar, Clock, Loader2, User, X } from "lucide-react";
 import { cancelBookingAction } from "../../../../../actions/booking";

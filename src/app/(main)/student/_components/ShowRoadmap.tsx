@@ -16,10 +16,10 @@ interface RoadmapSection {
 }
 
 interface RoadmapProps {
-  roadmap: RoadmapSection[];
+  roadmap: RoadmapSection[] | [];
 }
 
-export default function StudyRoadmap({ roadmap }: RoadmapProps) {
+const ShowRoadmap = ({ roadmap }: RoadmapProps) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const totalSections = roadmap.length;
   const section = roadmap[currentIndex];
@@ -37,12 +37,12 @@ export default function StudyRoadmap({ roadmap }: RoadmapProps) {
       <Card className="w-full max-w-2xl shadow-lg border border-gray-200 transition-all duration-300">
         <CardHeader>
           <CardTitle className="text-xl font-semibold text-gray-800 text-center">
-            {section.name}
+            {section?.name}
           </CardTitle>
         </CardHeader>
 
         <CardContent className="space-y-3 min-h-[40vh] max-h-[40vh] overflow-y-auto">
-          {section.notes.map((note, i) => (
+          {section?.notes.map((note, i) => (
             <div
               key={i}
               className="p-3 rounded-xl bg-gray-100 text-gray-700 text-sm leading-relaxed"
@@ -77,4 +77,6 @@ export default function StudyRoadmap({ roadmap }: RoadmapProps) {
       </Card>
     </div>
   );
-}
+};
+
+export default ShowRoadmap;

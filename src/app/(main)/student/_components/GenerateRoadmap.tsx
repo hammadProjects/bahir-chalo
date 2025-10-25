@@ -19,8 +19,8 @@ import {
 import useFetch from "@/hooks/useFetch";
 import { countries } from "@/lib/data";
 import { generateRoadmapAction } from "../../../../../actions/student";
-import { useEffect, useState } from "react";
-import StudyRoadmap from "./ShowRoadmap";
+import { useState } from "react";
+import ShowRoadmap from "./ShowRoadmap";
 
 const GenerateRoadmap = () => {
   const [selectedCountry, setSelectedCountry] = useState("");
@@ -37,11 +37,6 @@ const GenerateRoadmap = () => {
     generateRoadmap(formData);
   };
 
-  useEffect(() => {
-    console.log(data);
-    // console.log(data?.roadmap, typeof data?.roadmap);
-  }, [data]);
-
   return (
     <Card>
       <CardHeader>
@@ -54,16 +49,16 @@ const GenerateRoadmap = () => {
 
       <CardContent>
         {data?.roadmap ? (
-          <StudyRoadmap roadmap={data.roadmap} />
+          <ShowRoadmap roadmap={data.roadmap} />
         ) : loading ? (
           "Please Wait, we are getting something for you..."
         ) : (
-          <div className="flex gap-4">
+          <div className="flex flex-col sm:flex-row gap-4">
             <Select
               value={selectedCountry}
               onValueChange={(value) => setSelectedCountry(value)}
             >
-              <SelectTrigger>
+              <SelectTrigger className="w-full">
                 <SelectValue placeholder="Select your desired Country" />
               </SelectTrigger>
               <SelectContent>
