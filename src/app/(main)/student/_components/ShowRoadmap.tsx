@@ -3,12 +3,18 @@ import { useState } from "react";
 import {
   Card,
   CardHeader,
-  CardTitle,
   CardContent,
   CardFooter,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, ArrowRight, ChevronRightIcon } from "lucide-react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+} from "@/components/ui/select";
 
 interface RoadmapSection {
   name: string;
@@ -36,9 +42,27 @@ const ShowRoadmap = ({ roadmap }: RoadmapProps) => {
     <div className="flex flex-col items-center justify-center px-4">
       <Card className="w-full max-w-2xl shadow-lg border border-gray-200 transition-all duration-300">
         <CardHeader>
-          <CardTitle className="text-xl font-semibold text-gray-800 text-center">
-            {section?.name}
-          </CardTitle>
+          <Select
+            value={section.name}
+            onValueChange={(value) => setCurrentIndex(+value)}
+          >
+            <SelectTrigger className="w-full text-xl font-semibold flex justify-center capitalize py-2 text-gray-800 text-center hover:scale-103 transition-all cursor-pointer">
+              {section?.name}
+            </SelectTrigger>
+            <SelectGroup>
+              <SelectContent className="cursor-pointer">
+                {roadmap.map((sec, i) => (
+                  <SelectItem
+                    className="mt-2 capitalize"
+                    key={sec.name}
+                    value={`${i}`}
+                  >
+                    {sec?.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </SelectGroup>
+          </Select>
         </CardHeader>
 
         <CardContent className="space-y-3 min-h-[40vh] max-h-[40vh] overflow-y-auto">
