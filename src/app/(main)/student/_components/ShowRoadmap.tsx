@@ -15,6 +15,8 @@ import {
   SelectItem,
   SelectTrigger,
 } from "@/components/ui/select";
+import { motion } from "framer-motion";
+import { Separator } from "@/components/ui/separator";
 
 interface RoadmapSection {
   name: string;
@@ -40,13 +42,13 @@ const ShowRoadmap = ({ roadmap }: RoadmapProps) => {
 
   return (
     <div className="flex flex-col items-center justify-center px-4">
-      <Card className="w-full max-w-2xl shadow-lg border border-gray-200 transition-all duration-300">
+      <Card className="w-full max-w-xl shadow-lg border border-gray-200 transition-all duration-300">
         <CardHeader>
           <Select
-            value={section.name}
+            value={section?.name}
             onValueChange={(value) => setCurrentIndex(+value)}
           >
-            <SelectTrigger className="w-full text-xl font-semibold flex justify-center capitalize py-2 text-gray-800 text-center hover:scale-103 transition-all cursor-pointer">
+            <SelectTrigger className="border-0 shadow-sm w-full text-sm md:text-2xl font-bold flex justify-center capitalize py-2 text-gray-800 text-center hover:scale-103 transition-all cursor-pointer">
               {section?.name}
             </SelectTrigger>
             <SelectGroup>
@@ -67,14 +69,21 @@ const ShowRoadmap = ({ roadmap }: RoadmapProps) => {
 
         <CardContent className="space-y-3 min-h-[40vh] max-h-[40vh] overflow-y-auto">
           {section?.notes.map((note, i) => (
-            <div
-              key={i}
-              className="p-3 rounded-xl bg-gray-100 text-gray-700 text-sm leading-relaxed"
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.2 * (i + 1) }}
+              key={note}
+              className="p-3 rounded-xl bg-gray-100/30 border-[1px] border-gray-400/30 hover:shadow-md transition-all text-gray-700 text-sm leading-relaxed"
             >
               {note}
-            </div>
+            </motion.div>
           ))}
         </CardContent>
+
+        <div className="px-3 md:px-6">
+          <Separator />
+        </div>
 
         <CardFooter className="flex items-center justify-between pt-4">
           <Button
@@ -86,14 +95,22 @@ const ShowRoadmap = ({ roadmap }: RoadmapProps) => {
             <ArrowLeft size={18} />
           </Button>
 
-          <p className="text-gray-500 text-sm">
-            {currentIndex + 1} / {totalSections}
-          </p>
+          <div className="flex gap-1">
+            {roadmap.map((item, i) => (
+              <div
+                key={item.name}
+                onClick={() => setCurrentIndex(i)}
+                className={`${
+                  currentIndex === i ? "bg-emerald-500/80" : "bg-emerald-500/30"
+                } h-2 w-2 rounded-full cursor-pointer transition-colors`}
+              />
+            ))}
+          </div>
 
           <Button
             onClick={handleNext}
             disabled={currentIndex === totalSections - 1}
-            className="rounded-full"
+            className="rounded-full bg-emerald-500/70 hover:bg-emerald-500/80"
           >
             <ArrowRight size={18} />
           </Button>

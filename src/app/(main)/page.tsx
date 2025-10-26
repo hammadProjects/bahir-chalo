@@ -9,15 +9,16 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { plans, steps } from "@/lib/data";
+import { plans, StaticRoadmapData, steps } from "@/lib/data";
 import { ArrowRight, Check, MoveRight } from "lucide-react";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import ShowRoadmap from "./student/_components/ShowRoadmap";
 
 export default function Home() {
   return (
     <>
-      <BgGradient className="top-40 md:top-10" />
+      <BgGradient position="top" />
       <section className="py-20 md:py-38 text-center space-y-10 px-4">
         <motion.div
           initial={{ opacity: 0 }}
@@ -68,17 +69,15 @@ export default function Home() {
         </motion.div>
       </section>
 
-      {/* <section className="py-20 text-center space-y-6">
-        <h1 className="text-3xl font-bold max-w-lg mx-auto">
-          Everything You Need to start Your{" "}
-          <span className="text-teal-600">Study Abroad Journey</span>
-        </h1>
-        <p className="max-w-xl mx-auto text-muted-foreground">
-          From exploring the right courses to securing scholarships and getting
-          expert advice, our platform combines AI-powered tools and professional
-          guidance — all in one place.
-        </p>
-      </section> */}
+      <section className="py-4">
+        <BgGradient position="bottom" />
+        <h2 className="text-2xl md:text-3xl font-bold max-w-xl mx-auto text-center mb-4">
+          Watch Bahir Chalo use AI to create your{" "}
+          <span className="text-emerald-500/80">personalized</span> study abroad
+          roadmap
+        </h2>
+        <ShowRoadmap roadmap={StaticRoadmapData} />
+      </section>
 
       <section className="flex flex-col items-center justify-center bg-gray-50 py-10 md:py-20 px-4">
         <h3 className="text-teal-600 font-bold text-xl">What to Expect?</h3>

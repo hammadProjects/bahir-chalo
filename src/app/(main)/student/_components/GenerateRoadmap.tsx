@@ -19,11 +19,18 @@ import {
 import useFetch from "@/hooks/useFetch";
 import { countries } from "@/lib/data";
 import { generateRoadmapAction } from "../../../../../actions/student";
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ShowRoadmap from "./ShowRoadmap";
+import { messages } from "@/lib/utils";
+import ShowRoadmapShimmer from "./ShowRoadmapShimmer";
 
-const GenerateRoadmap = () => {
+interface Props {
+  refetchRoadmaps: () => void;
+}
+
+const GenerateRoadmap: React.FC<Props> = ({ refetchRoadmaps }) => {
   const [selectedCountry, setSelectedCountry] = useState("");
+  const [currentMessageIndex, setCurrentMessageIndex] = useState(0);
   const {
     data,
     loading,
@@ -37,6 +44,22 @@ const GenerateRoadmap = () => {
     generateRoadmap(formData);
   };
 
+  useEffect(() => {
+    if (data?.success) {
+      refetchRoadmaps();
+    }
+  }, [data]);
+
+  useEffect(() => {
+    if (currentMessageIndex >= messages.length - 1) return;
+    const timer = setInterval(() => {
+      setCurrentMessageIndex((prev) =>
+        prev < messages.length - 1 ? prev + 1 : prev
+      );
+    }, 5500);
+    return () => clearInterval(timer);
+  }, [currentMessageIndex]);
+
   return (
     <Card>
       <CardHeader>
@@ -49,9 +72,14 @@ const GenerateRoadmap = () => {
 
       <CardContent>
         {data?.roadmap ? (
-          <ShowRoadmap roadmap={data.roadmap} />
+          <ShowRoadmap roadmap={data?.roadmap} />
         ) : loading ? (
-          "Please Wait, we are getting something for you..."
+          <>
+            <p className="text-gray-700 text-base md:text-lg font-medium animate-pulse mb-4">
+              {messages[currentMessageIndex]}
+            </p>
+            <ShowRoadmapShimmer />
+          </>
         ) : (
           <div className="flex flex-col sm:flex-row gap-4">
             <Select
@@ -74,6 +102,7 @@ const GenerateRoadmap = () => {
             </Select>
 
             <Button
+              className="bg-emerald-500/80 hover:bg-emerald-500/90"
               onClick={() => handleGenerateRoadmap(selectedCountry)}
               disabled={!selectedCountry}
             >

@@ -13,8 +13,11 @@ import React, { useEffect, useState } from "react";
 import ShowRoadmap from "./ShowRoadmap";
 import useFetch from "@/hooks/useFetch";
 import { getRoadmapById } from "../../../../../actions/student";
+import MyRoadmapsShimmer from "./MyRoadmapsShimmer";
+import ShowRoadmapShimmer from "./ShowRoadmapShimmer";
 
 interface Props {
+  apiLoading: boolean;
   roadmaps: {
     _id: string;
     studentId: string;
@@ -28,7 +31,7 @@ interface Props {
   }[];
 }
 
-const MyRoadmaps: React.FC<Props> = ({ roadmaps }) => {
+const MyRoadmaps: React.FC<Props> = ({ roadmaps, apiLoading }) => {
   const { loading, fn: getRoadmap, data } = useFetch(getRoadmapById);
   const [roadmapId, setRoadmapId] = useState<string | null>(null);
 
@@ -48,14 +51,16 @@ const MyRoadmaps: React.FC<Props> = ({ roadmaps }) => {
       </CardHeader>
 
       <CardContent>
-        {roadmapId ? (
-          <div>
+        {apiLoading ? (
+          <MyRoadmapsShimmer />
+        ) : roadmapId ? (
+          <div className="space-y-4">
             <Button onClick={() => setRoadmapId(null)} variant={"secondary"}>
               <ChevronLeft />
-              go Back
+              Back to My Roadmaps
             </Button>
             {loading ? (
-              <div>loading...</div>
+              <ShowRoadmapShimmer />
             ) : data?.roadmapData ? (
               <ShowRoadmap roadmap={data?.roadmapData} />
             ) : (
@@ -66,7 +71,7 @@ const MyRoadmaps: React.FC<Props> = ({ roadmaps }) => {
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
             {roadmaps.map((item) => (
               <Button
-                className="rounded-xl shadow-md h-14 hover:scale-103 transition-all"
+                className="border-[2px] border-emerald-400/20 hover:border-emerald-400/40 bg-emerald-500/5 hover:bg-emerald-500/7 rounded-xl h-14 hover:scale-103 transition-all"
                 key={item?._id}
                 variant={"secondary"}
                 onClick={() => {

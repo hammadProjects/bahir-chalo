@@ -3,7 +3,7 @@ import { TabsContent } from "@radix-ui/react-tabs";
 import GenerateRoadmap from "./_components/GenerateRoadmap";
 import BookedAppointments from "./_components/BookedAppointments";
 import MyRoadmaps from "./_components/MyRoadmaps";
-import { useQueries, useQuery } from "@tanstack/react-query";
+import { useQueries } from "@tanstack/react-query";
 import { getBookings } from "../../../../actions/booking";
 import { getAllRoadmaps } from "../../../../actions/student";
 
@@ -22,10 +22,17 @@ const StudentDashboard = () => {
   return (
     <>
       <TabsContent value="my-roadmaps">
-        <MyRoadmaps roadmaps={roadmaps?.data?.roadmapData || []} />
+        <MyRoadmaps
+          apiLoading={roadmaps?.isLoading}
+          roadmaps={roadmaps?.data?.roadmapData || []}
+        />
       </TabsContent>
       <TabsContent value="generate-roadmaps">
-        <GenerateRoadmap />
+        <GenerateRoadmap
+          refetchRoadmaps={async () => {
+            await roadmaps.refetch();
+          }}
+        />
       </TabsContent>
       <TabsContent value="booked-appointments">
         <BookedAppointments

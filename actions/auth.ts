@@ -182,3 +182,63 @@ export const otpResendAction = async (prevState: unknown) => {
     };
   }
 };
+
+export const forgetPasswordAction = async (
+  prevState: unknown,
+  formData: FormData
+) => {
+  try {
+    const email = formData.get("email");
+    if (!email) return { success: false, message: "Email is required" };
+
+    await api.post("/auth/forget-password", { email });
+
+    return {
+      success: true,
+      message: "Reset password link has been sent to your email",
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: generateError(error),
+    };
+  }
+};
+
+export const resetPasswordAction = async (
+  prevState: unknown,
+  formData: FormData
+) => {
+  try {
+    const email = (await cookies()).get("email")?.value;
+    if (!email)
+      return {
+        success: false,
+        message: "Email is required",
+        url: "/forget-password",
+      };
+
+    const password = formData.get("password");
+    const resetPasswordId = formData.get("resetPasswordId");
+
+    const payload = {
+      email,
+      password,
+    };
+
+    await api.post(`/auth/reset-password/${resetPasswordId}`, payload);
+
+    return {
+      success: true,
+      message: "Your Password has been reset. Please sign in to Continue",
+      url: "/sign-in",
+    };
+  } catch (error) {
+    console.log(error);
+    return {
+      success: false,
+      message: generateError(error),
+      url: "/forget-password",
+    };
+  }
+};

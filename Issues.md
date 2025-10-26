@@ -4,12 +4,13 @@ HIGH:
 
 1. When verify otp do not use redirect use router.push - Fixed
 2. Consultant should not be able to book his own appointment
+3. Appointment is already expired - Should not be able to cancel it
 
-3. Consultants are not allowed visit /consultants but allowed to /consultant as it starts with it in array search.
-4. When consultant status is pending or rejected header is find on / but when go to /consultant (dashboard) the link in header changes from Verification to dashboard
-5. Dynamically getting token and admin it to axios headers and if token expires error comes then redirect to sign in again
-6. Dynamic error and response using inceptors.response axios
-7. As soon as backend turns of the authentication is so harsh that it immediately redirects to sign-in
+4. Consultants are not allowed visit /consultants but allowed to /consultant as it starts with it in array search.
+5. When consultant status is pending or rejected header is find on / but when go to /consultant (dashboard) the link in header changes from Verification to dashboard
+6. Dynamically getting token and admin it to axios headers and if token expires error comes then redirect to sign in again
+7. Dynamic error and response using inceptors.response axios
+8. As soon as backend turns of the authentication is so harsh that it immediately redirects to sign-in
 
 Backend:
 

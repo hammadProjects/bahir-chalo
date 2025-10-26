@@ -45,7 +45,7 @@ export const generateRoadmapAction = async (formData: FormData) => {
     return {
       success: true,
       message: "Roadmap generated successfully",
-      roadmap: res.data?.data,
+      roadmap: res.data?.data || [],
     };
   } catch (error) {
     return {

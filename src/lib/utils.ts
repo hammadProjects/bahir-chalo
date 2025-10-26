@@ -72,10 +72,12 @@ export const formatDateInHours = (date: Date | null) =>
 export const getCurrentDate = (date: Date | null) =>
   date && format(new Date(date), "dd MMM yyyy");
 
-export const thinkingMessages = [
-  "🤔 Thinking about the best route for your journey abroad...",
-  "📚 Checking the top universities that fit your profile...",
-  "🧾 Preparing a personalized study roadmap...",
-  "✈️ Gathering visa and admission requirements...",
-  "💡 Almost there... something exciting is waiting for you!",
+export const messages = [
+  "⚙️ Contacting Gemini servers...",
+  "🔍 Gathering study material insights...",
+  "🧠 Thinking deeply about your preferences...",
+  "📊 Analyzing academic trends and scores...",
+  "🧭 Designing your personalized roadmap...",
+  "✨ Almost there... finalizing the results!",
+  "🚀 Ready in a moment!",
 ];

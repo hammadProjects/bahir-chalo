@@ -1,17 +1,42 @@
 "use client";
-import React, { useState } from "react";
+import React, {
+  startTransition,
+  useActionState,
+  useEffect,
+  useState,
+} from "react";
 import AuthPage from "../_components/AuthPage";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { ArrowLeftIcon, LoaderCircle } from "lucide-react";
+import { forgetPasswordAction } from "../../../../actions/auth";
+import { toast } from "sonner";
 
 const ForgetPasswordPage = () => {
   const [email, setEmail] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [response, formAction, loading] = useActionState(
+    forgetPasswordAction,
+    undefined
+  );
 
-  console.dir(<h1 className="name">this is the name</h1>);
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    startTransition(() => {
+      const formData = new FormData();
+      formData.append("email", email);
+      formAction(formData);
+    });
+  };
+
+  useEffect(() => {
+    if (response?.success) {
+      toast.success(response?.message);
+    } else if (response?.success == false) {
+      toast.error(response?.message);
+    }
+  }, [response]);
 
   return (
     <AuthPage
@@ -19,7 +44,7 @@ const ForgetPasswordPage = () => {
       description="Enter your email to receive a reset link."
     >
       <div>
-        <form className="space-y-2">
+        <form onSubmit={handleSubmit} className="space-y-2">
           <Label htmlFor="email">Email</Label>
           <Input
             id="email"
@@ -37,8 +62,7 @@ const ForgetPasswordPage = () => {
           </div>
           <Button
             disabled={loading}
-            // type="submit"
-            onClick={() => setLoading(true)}
+            type="submit"
             className="w-full mt-2 bg-emerald-400 hover:bg-emerald-400/90 text-white"
           >
             {loading ? (

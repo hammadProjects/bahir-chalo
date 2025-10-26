@@ -34,7 +34,7 @@ const Header = async () => {
 
   return (
     hideHeader && (
-      <header className="h-16 px-10">
+      <header className="h-16 px-6 sm:px-10 md:px-24">
         <div className="flex justify-between items-center">
           <div className="w-20 h-16">
             <Link className="-mt-1 -ml-3 inline-block" href={"/"}>
@@ -54,7 +54,7 @@ const Header = async () => {
           >
             <Link href={"/#pricing"}>Pricing</Link>
           </Button>
-          <div className="flex items-center">
+          <div className="flex items-center ">
             <Button
               variant={"link"}
               className=" hover:text-emerald-700/80"

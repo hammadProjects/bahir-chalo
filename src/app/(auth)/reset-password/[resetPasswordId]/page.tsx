@@ -1,50 +1,45 @@
 "use client";
-import React, { useState } from "react";
+import React, {
+  startTransition,
+  useActionState,
+  useEffect,
+  useState,
+} from "react";
 import AuthPage from "../../_components/AuthPage";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { LoaderCircle } from "lucide-react";
-import { z } from "zod";
-import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { resetPasswordThunk } from "@/redux/thunk/auth.thunk";
 import { toast } from "sonner";
-import { redirect, useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
+import { resetPasswordAction } from "../../../../../actions/auth";
 
 const ForgetPasswordPage = () => {
-  const [password, setPassword] = useState("");
   const { resetPasswordId } = useParams();
-  // console.log(resetPasswordId);
+  const [response, formAction, loading] = useActionState(
+    resetPasswordAction,
+    undefined
+  );
+  const [password, setPassword] = useState("");
+  const { push } = useRouter();
 
-  const dispatch = useAppDispatch();
-  const { loading } = useAppSelector((store) => store.auth);
+  useEffect(() => {
+    if (response?.success) {
+      toast.success(response?.message);
+    } else if (response?.success == false) {
+      toast.error(response?.message);
+    }
+    if (response?.url) push(response?.url);
+  }, [response]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const result = z.string().min(4).safeParse(password);
-    if (!result.success) {
-      toast.error("Password must be atleast 4 Characters", {
-        richColors: true,
-      });
-      return;
-    }
-
-    const email = localStorage.getItem("email");
-    const verifiedEmail = z.email().safeParse(email);
-    if (!verifiedEmail.success || !email) {
-      toast.error("Please Enter Email again");
-      redirect("/forget-password");
-      return;
-    }
-
-    const data = await dispatch(
-      resetPasswordThunk({ resetPasswordId, email, password })
-    );
-    if (!data.payload?.success) {
-      // just for now reedirecting back to writing email
-      redirect("/forget-password");
-    }
-    redirect("/sign-in");
+    startTransition(() => {
+      const formData = new FormData();
+      formData.append("password", password);
+      formData.append("resetPasswordId", `${resetPasswordId}`);
+      formAction(formData);
+    });
   };
 
   return (
