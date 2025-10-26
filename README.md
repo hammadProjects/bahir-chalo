@@ -1,36 +1,54 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Bahir Chalo
 
-## Getting Started
+- AI powered Application that helps students find study abroad opportunities with AI (Gemini) generated personalized roadmaps
+- Students can connect with consultants by booking appointments
+- Admin verifies consultants; students can only view verified ones
+- Consultants manage availability, appointments, and appointments status updates
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+![](./public/bahir-chalo-hero.png)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+# 🚀 Modules Completed
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- Auth: Sign-in, Sign-up, Verify-OTP, Reset-Password using JWT Authentication
+- Admin: Verify Consultants, View all Consultants
+- Student: View only verified consultants, Generate AI-based personalized roadmaps with Gemini API, View previously generated roadmaps, Cancel Appointments
+- Consultant: Set availability (applies for all days), View booked appointments, Cancel and Complete Appointments
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+# 🔮 Modules To Be Completed
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- Payments (consultation or subscription)
+- Video Calls (1:1 meeting between student and consultant)
+- Notifications (emails / in-app)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+# 🛠 Tech Stack
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- Next.js
+- Tailwind CSS
+- React Query
+- Axios
+- ShadCN/UI
+- Motion
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+# ⚙️ Setup
+
+- Clone the repository  
+  `git clone https://github.com/hammadProjects/bahir-chalo.git`
+- Navigate to the project folder  
+  `cd bahir-chalo`
+- Install dependencies  
+  `npm install`
+- Run the development server  
+  `npm run dev`
+- The app will start on http://localhost:3000
+
+---
