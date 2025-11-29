@@ -2,7 +2,7 @@
 
 import api from "@/services/api";
 import { generateError } from "@/lib/utils";
-import { BookingSchema, UseFetchData } from "@/types/types";
+import { BookingSchema, PaginationSchema, UseFetchData } from "@/types/types";
 import { cookies, headers } from "next/headers";
 import { revalidatePath } from "next/cache";
 
@@ -43,16 +43,21 @@ export const BookAppointment = async (formData: FormData) => {
   }
 };
 
-export const getBookings = async () => {
+export const getBookings = async (formData: FormData) => {
   try {
     const token = (await cookies()).get("token")?.value;
     if (!token) throw Error("Unauthorized");
 
-    const res = await api.get("/booking/mine", {
+    const pageNum = formData.get("page");
+    const limit = 5;
+
+    const res = await api.get(`/booking/mine?page=${pageNum}&limit=${limit}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
 
-    return res.data?.data?.bookings as BookingSchema[];
+    console.log("bookings", res.data?.pagination);
+
+    return res.data?.pagination as PaginationSchema;
   } catch (error) {
     console.log(error);
   }

@@ -105,7 +105,10 @@ const ConsultantAvailability: React.FC<Props> = ({
               <Button variant={"outline"} onClick={() => setShowForm(false)}>
                 Cancel
               </Button>
-              <Button type="submit">
+              <Button
+                className="bg-emerald-600/90 hover:bg-emerald-600/80"
+                type="submit"
+              >
                 {loading && <Loader2 className="animate-spin" />}
                 Save Changes
               </Button>
@@ -126,14 +129,17 @@ const ConsultantAvailability: React.FC<Props> = ({
                 >
                   <Clock />
                   <span className="font-semibold">
-                    {formatDateInHours(availability?.startTime || null)} :{" "}
-                    {formatDateInHours(availability?.endTime || null)}
+                    {formatDateInHours(availability?.startTime || null, true)} :{" "}
+                    {formatDateInHours(availability?.endTime || null, true)}
                   </span>
                 </div>
               )
             )}
 
-            <Button className="my-4 w-full" onClick={() => setShowForm(true)}>
+            <Button
+              className="bg-emerald-600/90 hover:bg-emerald-600/80 my-4 w-full"
+              onClick={() => setShowForm(true)}
+            >
               <Plus /> Set Availability
             </Button>
           </>

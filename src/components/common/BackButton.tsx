@@ -11,11 +11,11 @@ interface Props {
 
 const BackButton: React.FC<Props> = ({ title, url, style }) => {
   return (
-    <Button className={style} size={"sm"} variant={"outline"}>
-      <Link href={url || "/"} className="flex gap-1 items-center">
+    <Link href={url || "/"}>
+      <Button className={style} size={"sm"} variant={"outline"}>
         <ArrowLeft /> {title}
-      </Link>
-    </Button>
+      </Button>
+    </Link>
   );
 };
 

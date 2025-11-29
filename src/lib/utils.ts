@@ -39,12 +39,12 @@ export const getDashboardUrl = (role: string, status?: string) => {
 export const generateError = (error: unknown) => {
   let message = "Something Went Wrong. Please try again";
 
-  if (error && typeof error === "object" && "message" in error) {
-    const err = error as { message: string; success: boolean };
-    message = err.message;
-  } else if (error && typeof error === "object" && "response" in error) {
+  if (error && typeof error === "object" && "response" in error) {
     const err = error as { response?: { data?: { message?: string } } };
     message = err.response?.data?.message || message;
+  } else if (error && typeof error === "object" && "message" in error) {
+    const err = error as { message: string; success: boolean };
+    message = err.message;
   }
   return message;
 };
@@ -66,8 +66,8 @@ export const convertTimeToDate = (timeStr: string) => {
   return date;
 };
 
-export const formatDateInHours = (date: Date | null) =>
-  date && format(new Date(date), "hh:mm a");
+export const formatDateInHours = (date: Date | null, addMeridiem?: boolean) =>
+  date && format(new Date(date), addMeridiem ? "hh:mm a" : "hh:mm");
 
 export const getCurrentDate = (date: Date | null) =>
   date && format(new Date(date), "dd MMM yyyy");

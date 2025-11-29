@@ -53,11 +53,10 @@ export const loginUserAction = async (
     };
   } catch (error) {
     // (todo) - change error type here
-    console.log(error);
-    const message = generateError(error);
+    console.log(generateError(error));
     return {
       success: false,
-      message,
+      message: generateError(error),
     };
   }
 };
@@ -190,6 +189,8 @@ export const forgetPasswordAction = async (
   try {
     const email = formData.get("email");
     if (!email) return { success: false, message: "Email is required" };
+
+    (await cookies()).set("email", `${email}`);
 
     await api.post("/auth/forget-password", { email });
 

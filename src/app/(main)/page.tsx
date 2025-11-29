@@ -54,17 +54,20 @@ export default function Home() {
           transition={{ delay: 0.6 }}
         >
           <div className="space-x-4 space-y-4">
-            <Button className="w-full md:w-40 lg:w-48 bg-linear-to-r from-emerald-400 to-teal-600 hover:from-teal-600 hover:to-emerald-400 hover:scale-110 text-lg !px-6 py-6 lg:py-8 rounded-full transition-all duration-300">
-              <Link className="flex items-center gap-1" href={"/onboarding"}>
+            <Link href={"/onboarding"}>
+              <Button className="w-full md:w-40 lg:w-48 bg-linear-to-r from-emerald-400 to-teal-600 hover:from-teal-600 hover:to-emerald-400 hover:scale-110 text-lg !px-6 py-6 lg:py-8 rounded-full transition-all duration-300">
                 Get Started <ArrowRight />
-              </Link>
-            </Button>
-            <Button
-              className="w-full md:w-40 lg:w-48 bg-muted/60 border-none px-6 py-6 lg:py-8 text-lg rounded-full hover:scale-110 transition-all duration-300"
-              variant={"outline"}
-            >
-              <Link href={"/consultants"}>Find Consultants</Link>
-            </Button>
+              </Button>
+            </Link>
+
+            <Link href={"/consultants"}>
+              <Button
+                className="w-full md:w-40 lg:w-48 bg-muted/60 border-none px-6 py-6 lg:py-8 text-lg rounded-full hover:scale-110 transition-all duration-300"
+                variant={"outline"}
+              >
+                Find Consultants
+              </Button>
+            </Link>
           </div>
         </motion.div>
       </section>

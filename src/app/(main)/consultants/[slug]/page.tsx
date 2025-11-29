@@ -34,6 +34,9 @@ const ConsultantProfile = () => {
 
   const { isLoading, data } = consultantById;
   const { data: slots } = availableSlots;
+  const slotKeys = Object.keys(slots?.timeSlots || {});
+  const slotLength = slotKeys?.map((key) => slots?.timeSlots[key]?.length);
+  const totalAvailabilities = slotLength?.reduce((acc, elem) => acc + elem, 0);
 
   return isLoading ? (
     <ByIdShimmer />
@@ -45,7 +48,7 @@ const ConsultantProfile = () => {
           style="mb-8"
           url="/consultants"
         />
-        <h1 className="text-4xl font-bold mb-4">
+        <h1 className="text-4xl font-bold mb-4 capitalize">
           {data?.consultant?.username}
         </h1>
       </div>
@@ -53,14 +56,7 @@ const ConsultantProfile = () => {
         <Card className="col-span-1 bg-muted/5 border-emerald-400/10 h-fit">
           <CardContent className="flex flex-col items-center pt-10">
             <div className="h-28 w-28 rounded-full bg-red-100" />
-            {/* <Image
-              src={"/images/banner2.webp"}
-              alt="avatar"
-              width={160}
-              height={160}
-              className="rounded-full"
-            /> */}
-            <h2 className="font-bold text-xl mt-4 mb-2">
+            <h2 className="font-bold text-xl mt-4 mb-2 capitalize">
               {data?.consultant?.username}
             </h2>
             <p className="flex mt-4 mb-6 gap-2">
@@ -78,7 +74,7 @@ const ConsultantProfile = () => {
         <div className="md:col-span-2 flex flex-col gap-6">
           <Card className="bg-muted/5 border-emerald-400 h-fit">
             <CardContent className="">
-              <h4 className="font-bold text-xl mb-2">
+              <h4 className="font-bold text-xl mb-2 capitalize">
                 About {data?.consultant?.username}
               </h4>
               <p className="text-muted-foreground text-sm mb-6">
@@ -90,7 +86,7 @@ const ConsultantProfile = () => {
                   <FileText className="text-emerald-400" />
                   Description
                 </h5>
-                <p className="text-muted-foreground mt-3">
+                <p className="text-muted-foreground mt-3 capitalize">
                   {data?.consultant?.consultantProfile?.bio}
                 </p>
               </div>
@@ -100,8 +96,8 @@ const ConsultantProfile = () => {
                   <Clock className="text-emerald-400" /> Availability
                 </h5>
                 <p className="text-muted-foreground mt-3">
-                  {data?.totalAvailabilities} time slots available for booking
-                  over the next 4 days
+                  {totalAvailabilities} time slots available for booking over
+                  the next 4 days
                 </p>
               </div>
             </CardContent>
@@ -122,7 +118,12 @@ const ConsultantProfile = () => {
                     </h2>
                   </div>
                 ) : (
-                  <AvailabilityTabs availabilities={slots?.timeSlots || {}} />
+                  <AvailabilityTabs
+                    refetchAvailabilities={async () => {
+                      await availableSlots?.refetch();
+                    }}
+                    availabilities={slots?.timeSlots || {}}
+                  />
                 )}
               </CardContent>
             </Card>

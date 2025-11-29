@@ -46,11 +46,12 @@ const ForgetPasswordPage = () => {
     <AuthPage title="Reset Password" description="Enter new Password">
       <div>
         <form className="space-y-2" onSubmit={handleSubmit}>
-          <Label htmlFor="email" className="">
+          <Label htmlFor="password" className="">
             Password
           </Label>
           <Input
-            id="email"
+            id="password"
+            type="password"
             min={4}
             placeholder="Please Enter New Password"
             value={password}

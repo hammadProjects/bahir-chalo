@@ -100,3 +100,12 @@ export interface UseFetchData {
   url?: string;
   hideResponse?: boolean;
 }
+
+export interface PaginationSchema {
+  bookings: BookingSchema[];
+  totalBookings: number;
+  totalPages: number;
+  hasPrev: boolean;
+  hasNext: boolean;
+  currentPage: number;
+}

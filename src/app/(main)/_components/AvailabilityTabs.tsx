@@ -14,12 +14,17 @@ import { TimeSlot } from "@/types/types";
 import { Calendar, Loader2 } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { BookAppointment } from "../../../../actions/booking";
+import { formatDateInHours } from "@/lib/utils";
 
 interface Props {
   availabilities: Record<string, TimeSlot[]>;
+  refetchAvailabilities: () => void;
 }
 
-const AvailabilityTabs: React.FC<Props> = ({ availabilities }) => {
+const AvailabilityTabs: React.FC<Props> = ({
+  availabilities,
+  refetchAvailabilities,
+}) => {
   const [dialogOpen, setDialogOpen] = useState<string | null>(null);
   const [notes, setNotes] = useState("");
   const { loading, fn: BookingAppointment, data } = useFetch(BookAppointment);
@@ -27,7 +32,7 @@ const AvailabilityTabs: React.FC<Props> = ({ availabilities }) => {
 
   useEffect(() => {
     if (data?.success) {
-      console.log(data);
+      refetchAvailabilities();
     }
   }, [data]);
 
@@ -68,11 +73,8 @@ const AvailabilityTabs: React.FC<Props> = ({ availabilities }) => {
                         className={`border-[1px] border-emerald-400 h-14 rounded-lg flex items-center 
                   justify-center hover:scale-105 transition-all cursor-pointer font-bold`}
                       >
-                        {`${new Date(startTime).getHours()} : ${new Date(
-                          startTime
-                        ).getMinutes()} `}{" "}
-                        - {new Date(endTime).getHours()} :
-                        {new Date(endTime).getMinutes()}
+                        {formatDateInHours(startTime, false)} -
+                        {formatDateInHours(endTime, false)}
                       </Button>
                     </DialogTrigger>
                     <DialogContent className="md:w-[780px]">

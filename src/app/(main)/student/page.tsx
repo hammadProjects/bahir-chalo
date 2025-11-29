@@ -6,18 +6,28 @@ import MyRoadmaps from "./_components/MyRoadmaps";
 import { useQueries } from "@tanstack/react-query";
 import { getBookings } from "../../../../actions/booking";
 import { getAllRoadmaps } from "../../../../actions/student";
+import AppPagination from "@/components/common/AppPagination";
 
 const StudentDashboard = () => {
-  const [bookings, roadmaps] = useQueries({
+  const getBookingsHandler = (page?: number) => {
+    const formData = new FormData();
+    page = page || 1;
+    formData.append("page", `${page}`);
+    return getBookings(formData);
+  };
+
+  const [bookingPagination, roadmaps] = useQueries({
     queries: [
-      { queryKey: ["get-bookings"], queryFn: getBookings },
+      { queryKey: ["get-bookings"], queryFn: () => getBookingsHandler() },
       { queryKey: ["getRoadmaps"], queryFn: getAllRoadmaps },
     ],
   });
 
   const refetchAppointments = async () => {
-    await bookings?.refetch();
+    await bookingPagination?.refetch();
   };
+
+  const handlePageChange = (page: number) => getBookingsHandler(page);
 
   return (
     <>
@@ -37,7 +47,15 @@ const StudentDashboard = () => {
       <TabsContent value="booked-appointments">
         <BookedAppointments
           refetchAppointments={refetchAppointments}
-          data={bookings?.data || []}
+          data={bookingPagination?.data?.bookings || []}
+          error={bookingPagination?.data?.bookings === undefined}
+        />
+        <AppPagination
+          totalPages={bookingPagination?.data?.totalPages!}
+          currentPage={bookingPagination?.data?.currentPage!}
+          hasNext={bookingPagination?.data?.hasNext!}
+          hasPrev={bookingPagination?.data?.hasPrev!}
+          onPageChange={handlePageChange}
         />
       </TabsContent>
     </>

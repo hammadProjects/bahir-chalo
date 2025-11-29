@@ -18,7 +18,7 @@ const ConsultantDashboardLayout: React.FC<Props> = ({ children }) => {
       <div className="">
         <BackButton title="Back to Home" url="/" style="mb-4" />
         <h1 className="flex items-center gap-2 text-2xl sm:text-3xl md:text-5xl font-bold mb-6">
-          <Users className="w-6 md:w-10 h-6 md:h-10" />
+          <Users className="text-emerald-400/90 w-8 h-8 md:w-10 md:h-10" />
           <span>Consultant Dashboard</span>
         </h1>
         <Tabs

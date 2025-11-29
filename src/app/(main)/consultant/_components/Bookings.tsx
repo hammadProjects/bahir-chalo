@@ -1,4 +1,5 @@
 "use client";
+import GetBookingStatus from "@/components/common/GetBooingStatus";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -8,7 +9,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { getCurrentDate, getCurrentTime } from "@/lib/utils";
-import { BookingSchema } from "@/types/types";
+import { BookingSchema, BookingStatus } from "@/types/types";
 import { Calendar, CheckCircle, Clock, User } from "lucide-react";
 
 interface Props {
@@ -56,13 +57,15 @@ const Bookings: React.FC<Props> = ({ data }) => {
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <div className="bg-amber-600/20 text-amber-700 p-1 rounded-sm text-xs w-fit">
-                    SCHEDULED
-                  </div>
+                  <GetBookingStatus
+                    status={booking?.status?.toUpperCase() as BookingStatus}
+                  />
                   <div className="flex items-center gap-2">
-                    <Button>
-                      <CheckCircle /> Complete
-                    </Button>
+                    {booking?.status.toUpperCase() != "COMPLETED" && (
+                      <Button>
+                        <CheckCircle /> Complete
+                      </Button>
+                    )}
                     <Button className="py-1" variant={"outline"}>
                       View Details
                     </Button>

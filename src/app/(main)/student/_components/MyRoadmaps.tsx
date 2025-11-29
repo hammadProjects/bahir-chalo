@@ -79,7 +79,7 @@ const MyRoadmaps: React.FC<Props> = ({ roadmaps, apiLoading }) => {
                 }}
               >
                 <div>
-                  <p>{item.title}</p>
+                  <p className="capitalize">{item.title}</p>
                   <p>{getCurrentDate(item?.createdAt)}</p>
                 </div>
               </Button>
