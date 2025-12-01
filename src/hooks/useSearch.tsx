@@ -15,7 +15,6 @@ const useSearch = () => {
     const newTimeoutId = setTimeout(() => {
       setLoading(false);
       setDebouncedQuery(searchQuery);
-      console.log("hitting the api");
     }, 2000);
 
     setTimeoutId(newTimeoutId);

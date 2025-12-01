@@ -72,7 +72,7 @@ export default function Home() {
         </motion.div>
       </section>
 
-      <section className="py-4">
+      <section className="pb-8 md:pb-10 lg:pb-20">
         <BgGradient position="bottom" />
         <h2 className="text-2xl md:text-3xl font-bold max-w-xl mx-auto text-center mb-4">
           Watch Bahir Chalo use AI to create your{" "}

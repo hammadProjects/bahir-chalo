@@ -5,6 +5,7 @@ import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -15,8 +16,14 @@ import { Calendar, Clock, Loader2, User, X } from "lucide-react";
 import { cancelBookingAction } from "../../../../../actions/booking";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import AppPagination from "@/components/common/AppPagination";
 
 interface Props {
+  totalPages: number;
+  currentPage: number;
+  hasNext: boolean;
+  hasPrev: boolean;
+  handlePageChange: (page: number) => void;
   data: BookingSchema[] | [];
   refetchAppointments: () => void;
   error: boolean;
@@ -25,6 +32,11 @@ interface Props {
 const BookedAppointments: React.FC<Props> = ({
   error,
   data,
+  totalPages,
+  currentPage,
+  hasNext,
+  hasPrev,
+  handlePageChange,
   refetchAppointments,
 }) => {
   const [currentBookingid, setCurrentBooking] = useState<null | string>(null);
@@ -33,7 +45,6 @@ const BookedAppointments: React.FC<Props> = ({
     fn: CancelBooking,
     data: cancelBookingData,
   } = useFetch(cancelBookingAction);
-  console.log(data);
 
   const handleCancelBooking = (id: string) => {
     if (loading) return;
@@ -100,7 +111,7 @@ const BookedAppointments: React.FC<Props> = ({
                     {booking?.status.toUpperCase() === "SCHEDULED" && (
                       <Button
                         onClick={() => handleCancelBooking(booking?._id)}
-                        className="bg-red-600 hover:bg-red-500/83"
+                        className="bg-red-700 hover:bg-red-700/83"
                       >
                         {loading && currentBookingid == booking?._id ? (
                           <Loader2 className="animate-spin" />
@@ -120,6 +131,15 @@ const BookedAppointments: React.FC<Props> = ({
           ))
         )}
       </CardContent>
+      <CardFooter>
+        <AppPagination
+          totalPages={totalPages}
+          currentPage={currentPage}
+          hasNext={hasNext}
+          hasPrev={hasPrev}
+          onPageChange={handlePageChange}
+        />
+      </CardFooter>
     </Card>
   );
 };

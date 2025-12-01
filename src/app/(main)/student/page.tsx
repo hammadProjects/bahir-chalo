@@ -6,9 +6,10 @@ import MyRoadmaps from "./_components/MyRoadmaps";
 import { useQueries } from "@tanstack/react-query";
 import { getBookings } from "../../../../actions/booking";
 import { getAllRoadmaps } from "../../../../actions/student";
-import AppPagination from "@/components/common/AppPagination";
+import { useState } from "react";
 
 const StudentDashboard = () => {
+  const [page, setPage] = useState(1);
   const getBookingsHandler = (page?: number) => {
     const formData = new FormData();
     page = page || 1;
@@ -18,7 +19,10 @@ const StudentDashboard = () => {
 
   const [bookingPagination, roadmaps] = useQueries({
     queries: [
-      { queryKey: ["get-bookings"], queryFn: () => getBookingsHandler() },
+      {
+        queryKey: ["get-bookings", page],
+        queryFn: () => getBookingsHandler(page),
+      },
       { queryKey: ["getRoadmaps"], queryFn: getAllRoadmaps },
     ],
   });
@@ -27,7 +31,11 @@ const StudentDashboard = () => {
     await bookingPagination?.refetch();
   };
 
-  const handlePageChange = (page: number) => getBookingsHandler(page);
+  const handlePageChange = (page: number) => {
+    // getBookingsHandler(page);
+    if (page < 1) return;
+    setPage(page);
+  };
 
   return (
     <>
@@ -49,13 +57,11 @@ const StudentDashboard = () => {
           refetchAppointments={refetchAppointments}
           data={bookingPagination?.data?.bookings || []}
           error={bookingPagination?.data?.bookings === undefined}
-        />
-        <AppPagination
-          totalPages={bookingPagination?.data?.totalPages!}
-          currentPage={bookingPagination?.data?.currentPage!}
-          hasNext={bookingPagination?.data?.hasNext!}
-          hasPrev={bookingPagination?.data?.hasPrev!}
-          onPageChange={handlePageChange}
+          currentPage={bookingPagination?.data?.currentPage || 1}
+          totalPages={bookingPagination?.data?.totalPages || 1}
+          hasNext={bookingPagination?.data?.hasNext || false}
+          hasPrev={bookingPagination?.data?.hasPrev || false}
+          handlePageChange={handlePageChange}
         />
       </TabsContent>
     </>

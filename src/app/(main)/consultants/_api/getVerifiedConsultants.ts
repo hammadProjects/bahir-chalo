@@ -1,27 +1,32 @@
 "use server";
 
+import { generateError } from "@/lib/utils";
 import api from "@/services/api";
 import { Consultant } from "@/types/types";
-import { cookies } from "next/headers";
 
 export const getVerifiedConsultants = async () => {
   try {
-    const token = (await cookies()).get("token")?.value;
-    if (!token) throw Error("Unauthorized");
     const data = await api.get("/consultant", {
       withCredentials: true,
-      headers: { Authorization: `Bearer ${token}` },
     });
 
     return data.data?.data?.consultants as Consultant[];
   } catch (error) {
-    let message = "Something Went Wrong";
+    console.log(generateError(error));
+    return [];
+  }
+};
 
-    if (error && typeof error === "object" && "response" in error) {
-      const err = error as { response?: { data?: { message?: string } } };
-      message = err.response?.data?.message || message;
-    }
-    console.log(message);
+export const searchVerifiedConsultants = async (searchQuery: string) => {
+  try {
+    console.log("did this endpoint got hit huh", searchQuery);
+    const data = await api.get(`/consultant/search?search=${searchQuery}`, {
+      withCredentials: true,
+    });
+
+    return data.data?.data?.consultants as Consultant[];
+  } catch (error) {
+    console.log(generateError(error));
     return [];
   }
 };

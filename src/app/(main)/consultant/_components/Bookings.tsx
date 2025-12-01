@@ -1,22 +1,25 @@
 "use client";
+import AppPagination from "@/components/common/AppPagination";
 import GetBookingStatus from "@/components/common/GetBooingStatus";
 import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
 import { getCurrentDate, getCurrentTime } from "@/lib/utils";
-import { BookingSchema, BookingStatus } from "@/types/types";
+import { BookingSchema, BookingStatus, PaginationSchema } from "@/types/types";
 import { Calendar, CheckCircle, Clock, User } from "lucide-react";
 
 interface Props {
-  data: BookingSchema[] | [];
+  data: PaginationSchema;
+  handlePageChange: (page: number) => void;
 }
 
-const Bookings: React.FC<Props> = ({ data }) => {
+const Bookings: React.FC<Props> = ({ data, handlePageChange }) => {
   return (
     <Card>
       <CardHeader>
@@ -28,12 +31,12 @@ const Bookings: React.FC<Props> = ({ data }) => {
         </CardDescription>
       </CardHeader>
       <CardContent className="grid grid-cols-1 gap-4">
-        {data?.length === 0 ? (
+        {data?.bookings?.length === 0 ? (
           <div className="text-center font-bold text-lg">
             You have no bookings
           </div>
         ) : (
-          data?.map((booking) => (
+          data?.bookings?.map((booking) => (
             <Card key={booking._id} className="py-4 w-full">
               <CardContent className="flex items-center justify-between w-full">
                 <div className="flex gap-2 items-start">
@@ -76,6 +79,15 @@ const Bookings: React.FC<Props> = ({ data }) => {
           ))
         )}
       </CardContent>
+      <CardFooter>
+        <AppPagination
+          currentPage={data?.currentPage}
+          hasNext={data?.hasNext}
+          hasPrev={data?.hasPrev}
+          totalPages={data?.totalPages}
+          onPageChange={(page: number) => handlePageChange(page)}
+        />
+      </CardFooter>
     </Card>
   );
 };
