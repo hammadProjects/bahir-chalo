@@ -88,3 +88,27 @@ export const cancelBookingAction = async (formData: FormData) => {
     return { success: false, message: generateError(error) };
   }
 };
+
+export const joinAppointment = async (formData: FormData) => {
+  try {
+    const bookingId = formData.get("bookingId");
+    if (!bookingId)
+      return { success: false, message: "Booking ID and Role are required" };
+
+    const token = (await cookies()).get("token")?.value;
+    if (!token) return { success: false, message: "Unauthorized" };
+    const response = await api.post(
+      `/booking/join/${bookingId}`,
+      {},
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+
+    return {
+      success: true,
+      message: "Meeting will be joined shortly",
+      url: `http://localhost:3000/meeting/${response?.data?.data?.token}`,
+    };
+  } catch (error) {
+    return { success: false, message: generateError(error) };
+  }
+};

@@ -13,10 +13,19 @@ import useFetch from "@/hooks/useFetch";
 import { formatDateInHours, getCurrentDate } from "@/lib/utils";
 import { BookingSchema, BookingStatus } from "@/types/types";
 import { Calendar, Clock, Loader2, User, X } from "lucide-react";
-import { cancelBookingAction } from "../../../../../actions/booking";
+import {
+  cancelBookingAction,
+  joinAppointment,
+} from "../../../../../actions/booking";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import AppPagination from "@/components/common/AppPagination";
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 interface Props {
   totalPages: number;
@@ -40,11 +49,19 @@ const BookedAppointments: React.FC<Props> = ({
   refetchAppointments,
 }) => {
   const [currentBookingid, setCurrentBooking] = useState<null | string>(null);
+  const [dialogId, setDialogId] = useState<string | null>(null);
+
   const {
     loading,
     fn: CancelBooking,
     data: cancelBookingData,
   } = useFetch(cancelBookingAction);
+
+  const {
+    loading: joinAppointmentLoading,
+    fn: join,
+    // data: joinAppointmentData,
+  } = useFetch(joinAppointment);
 
   const handleCancelBooking = (id: string) => {
     if (loading) return;
@@ -53,6 +70,16 @@ const BookedAppointments: React.FC<Props> = ({
     formData.append("bookingId", id);
     formData.append("role", "student"); // for revalidate path
     CancelBooking(formData);
+    setCurrentBooking(null);
+  };
+
+  const handleJoinAppointment = (id: string) => {
+    if (joinAppointmentLoading) return;
+    setCurrentBooking(id);
+    const formData = new FormData();
+    formData.append("bookingId", id);
+    join(formData);
+    setCurrentBooking(null);
   };
 
   useEffect(() => {
@@ -111,7 +138,7 @@ const BookedAppointments: React.FC<Props> = ({
                     {booking?.status.toUpperCase() === "SCHEDULED" && (
                       <Button
                         onClick={() => handleCancelBooking(booking?._id)}
-                        className="bg-red-700 hover:bg-red-700/83"
+                        variant={"destructive"}
                       >
                         {loading && currentBookingid == booking?._id ? (
                           <Loader2 className="animate-spin" />
@@ -121,9 +148,36 @@ const BookedAppointments: React.FC<Props> = ({
                         Cancel
                       </Button>
                     )}
-                    <Button className="py-1" variant={"outline"}>
-                      View Details
-                    </Button>
+                    <Dialog
+                      open={dialogId === booking?._id}
+                      onOpenChange={(isOpen) =>
+                        setDialogId(isOpen ? `${booking?._id}` : null)
+                      }
+                      key={booking?._id}
+                    >
+                      <DialogTrigger asChild>
+                        <Button
+                          onClick={() => setDialogId(booking?._id)}
+                          className="py-1"
+                          variant={"outline"}
+                        >
+                          View Details
+                        </Button>
+                      </DialogTrigger>
+                      <DialogContent className="md:w-[780px]">
+                        <DialogTitle>Appointment Details</DialogTitle>
+                        <Button
+                          onClick={() => handleJoinAppointment(booking?._id)}
+                          disabled={joinAppointmentLoading}
+                        >
+                          {joinAppointmentLoading ? (
+                            <Loader2 className="animate-spin" />
+                          ) : (
+                            "Join Meeting"
+                          )}
+                        </Button>
+                      </DialogContent>
+                    </Dialog>
                   </div>
                 </div>
               </CardContent>

@@ -18,7 +18,7 @@ import React, { useActionState, useEffect } from "react";
 import { LoaderCircleIcon } from "lucide-react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { signInSchema, signUpSchema } from "@/lib/zodSchema";
+import { signInSchema, signUpSchema } from "@/types/formSchema";
 
 interface Props {
   type: "sign-up" | "sign-in";
@@ -113,22 +113,6 @@ const AuthForm: React.FC<Props> = ({ type, action }) => {
               </FormItem>
             )}
           />
-
-          {/* {type === "sign-up" && (
-            <FormField
-              control={form.control}
-              name="picture"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Picture</FormLabel>
-                  <FormControl>
-                    <Input type="file" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          )} */}
 
           <Button
             className="w-full bg-emerald-400 hover:bg-emerald-600/90 text-white"

@@ -68,6 +68,7 @@ export interface BookingSchema {
   notes: string;
   startTime: Date;
   endTime: Date;
+  meetingId: string;
   createdAt: Date;
   updatedAt: Date;
 }

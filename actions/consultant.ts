@@ -53,3 +53,26 @@ export const getAvailabilities = async () => {
     throw Error(generateError(error));
   }
 };
+
+export const validateStatus = async () => {
+  try {
+    const token = (await cookies()).get("token")?.value;
+    if (!token) throw Error("Unauthorized");
+
+    const res = await api.get("/consultant/status/validate", {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    return {
+      success: true,
+      message: "staus fetched successfully",
+      status: res.data?.status,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: generateError(error),
+      status: null,
+    };
+  }
+};

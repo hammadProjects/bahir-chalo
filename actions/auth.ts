@@ -67,19 +67,20 @@ export const registerUserAction = async (
 ) => {
   try {
     // validate with zod
+    const username = FormData.get("username");
     const email = FormData.get("email");
     const password = FormData.get("password");
 
-    if (!FormData || !email || !password)
+    if (!FormData || !email || !password || !username)
       return {
         success: false,
         message: "All Fields are Required",
       };
 
     const payload = {
-      username: FormData.get("username"),
-      email: FormData.get("email"),
-      password: FormData.get("password"),
+      username,
+      email,
+      password,
     };
 
     // store email in cookie
@@ -97,10 +98,9 @@ export const registerUserAction = async (
       url: "/verify-otp",
     };
   } catch (error: any) {
-    console.log(error);
     return {
       success: false,
-      message: error?.response?.data?.message || "Something Went Wrong",
+      message: generateError(error),
     };
   }
 };

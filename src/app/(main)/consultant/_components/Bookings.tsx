@@ -10,9 +10,18 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import useFetch from "@/hooks/useFetch";
 import { getCurrentDate, getCurrentTime } from "@/lib/utils";
 import { BookingSchema, BookingStatus, PaginationSchema } from "@/types/types";
-import { Calendar, CheckCircle, Clock, User } from "lucide-react";
+import { Calendar, CheckCircle, Clock, Loader2, User } from "lucide-react";
+import { useState } from "react";
+import { joinAppointment } from "../../../../../actions/booking";
 
 interface Props {
   data: PaginationSchema;
@@ -20,6 +29,24 @@ interface Props {
 }
 
 const Bookings: React.FC<Props> = ({ data, handlePageChange }) => {
+  const [currentBookingid, setCurrentBooking] = useState<null | string>(null);
+  const [dialogId, setDialogId] = useState<string | null>(null);
+
+  const {
+    loading: joinAppointmentLoading,
+    fn: join,
+    // data: joinAppointmentData,
+  } = useFetch(joinAppointment);
+
+  const handleJoinAppointment = (id: string) => {
+    if (joinAppointmentLoading) return;
+    setCurrentBooking(id);
+    const formData = new FormData();
+    formData.append("bookingId", id);
+    join(formData);
+    setCurrentBooking(null);
+  };
+
   return (
     <Card>
       <CardHeader>
@@ -69,9 +96,36 @@ const Bookings: React.FC<Props> = ({ data, handlePageChange }) => {
                         <CheckCircle /> Complete
                       </Button>
                     )}
-                    <Button className="py-1" variant={"outline"}>
-                      View Details
-                    </Button>
+                    <Dialog
+                      open={dialogId === booking?._id}
+                      onOpenChange={(isOpen) =>
+                        setDialogId(isOpen ? `${booking?._id}` : null)
+                      }
+                      key={booking?._id}
+                    >
+                      <DialogTrigger asChild>
+                        <Button
+                          onClick={() => setDialogId(booking?._id)}
+                          className="py-1"
+                          variant={"outline"}
+                        >
+                          View Details
+                        </Button>
+                      </DialogTrigger>
+                      <DialogContent className="md:w-[780px]">
+                        <DialogTitle>Appointment Details</DialogTitle>
+                        <Button
+                          onClick={() => handleJoinAppointment(booking?._id)}
+                          disabled={joinAppointmentLoading}
+                        >
+                          {joinAppointmentLoading ? (
+                            <Loader2 className="animate-spin" />
+                          ) : (
+                            "Join Meeting"
+                          )}
+                        </Button>
+                      </DialogContent>
+                    </Dialog>
                   </div>
                 </div>
               </CardContent>
