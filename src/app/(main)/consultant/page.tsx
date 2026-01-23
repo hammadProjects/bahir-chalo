@@ -4,7 +4,7 @@ import Availability from "./_components/ConsultantAvailability";
 import Bookings from "./_components/Bookings";
 import { useQueries } from "@tanstack/react-query";
 import { getBookings } from "../../../../actions/booking";
-import { getAvailabilities } from "../../../../actions/consultant";
+import { getAvailability } from "../../../../actions/consultant";
 import { useState } from "react";
 
 const ConsultantDashboard = () => {
@@ -27,7 +27,7 @@ const ConsultantDashboard = () => {
         queryKey: ["get-bookings", page],
       },
       {
-        queryFn: getAvailabilities,
+        queryFn: getAvailability,
         queryKey: ["get-availabilities"],
       },
     ],
@@ -42,7 +42,11 @@ const ConsultantDashboard = () => {
       <TabsContent value="earnings">Earnings</TabsContent>
       <TabsContent value="bookings">
         {bookings?.data && (
-          <Bookings data={bookings.data} handlePageChange={handlePageChange} />
+          <Bookings
+            data={bookings.data}
+            handlePageChange={handlePageChange}
+            refetch={async () => await bookings.refetch()}
+          />
         )}
       </TabsContent>
       <TabsContent value="availability">

@@ -11,6 +11,7 @@ import { getConsultantById } from "../_api/getConsultantById";
 import ByIdShimmer from "../_components/ByIdShimmer";
 import AvailabilityTabs from "../../_components/AvailabilityTabs";
 import { getAvailableTimeSlots } from "../../../../../actions/student";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const ConsultantProfile = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -55,7 +56,12 @@ const ConsultantProfile = () => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         <Card className="col-span-1 bg-muted/5 border-emerald-400/10 h-fit">
           <CardContent className="flex flex-col items-center pt-10">
-            <div className="h-28 w-28 rounded-full bg-red-100" />
+            <Avatar className="w-28 h-28">
+              <AvatarImage src={data?.consultant?.profilePicture} />
+              <AvatarFallback>
+                {data?.consultant?.username[0].toUpperCase()}
+              </AvatarFallback>
+            </Avatar>
             <h2 className="font-bold text-xl mt-4 mb-2 capitalize">
               {data?.consultant?.username}
             </h2>

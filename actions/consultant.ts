@@ -22,24 +22,23 @@ export const setAvailabilityAction = async (formData: FormData) => {
       endTime: convertTimeToDate(endTime as string),
     };
 
-    await api.post("/availability", payload, {
+    await api.post("/availabilities", payload, {
       headers: {
         Authorization: `Bearer ${(await cookies()).get("token")?.value}`,
       },
     });
     return { success: true, message: "Availability has been set successfully" };
   } catch (error) {
-    console.log(error);
     throw Error(generateError(error));
   }
 };
 
-export const getAvailabilities = async () => {
+export const getAvailability = async () => {
   try {
     const token = (await cookies()).get("token")?.value;
     if (!token) throw Error("Unauthorized");
 
-    const res = await api.get("/availability", {
+    const res = await api.get("/availabilities", {
       headers: { Authorization: `Bearer ${token}` },
     });
 
@@ -49,7 +48,6 @@ export const getAvailabilities = async () => {
       availability: (res.data?.data?.availability as Availability) || null,
     };
   } catch (error) {
-    console.log("error from get availability", error);
     throw Error(generateError(error));
   }
 };

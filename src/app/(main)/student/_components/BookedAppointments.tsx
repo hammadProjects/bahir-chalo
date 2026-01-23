@@ -26,6 +26,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { addMinutes, isBefore } from "date-fns";
 
 interface Props {
   totalPages: number;
@@ -52,7 +53,7 @@ const BookedAppointments: React.FC<Props> = ({
   const [dialogId, setDialogId] = useState<string | null>(null);
 
   const {
-    loading,
+    loading: cancelLoading,
     fn: CancelBooking,
     data: cancelBookingData,
   } = useFetch(cancelBookingAction);
@@ -64,13 +65,12 @@ const BookedAppointments: React.FC<Props> = ({
   } = useFetch(joinAppointment);
 
   const handleCancelBooking = (id: string) => {
-    if (loading) return;
+    if (cancelLoading) return;
     setCurrentBooking(id);
     const formData = new FormData();
     formData.append("bookingId", id);
     formData.append("role", "student"); // for revalidate path
-    CancelBooking(formData);
-    setCurrentBooking(null);
+    CancelBooking(formData).finally(() => setCurrentBooking(null));
   };
 
   const handleJoinAppointment = (id: string) => {
@@ -78,8 +78,7 @@ const BookedAppointments: React.FC<Props> = ({
     setCurrentBooking(id);
     const formData = new FormData();
     formData.append("bookingId", id);
-    join(formData);
-    setCurrentBooking(null);
+    join(formData).finally(() => setCurrentBooking(null));
   };
 
   useEffect(() => {
@@ -107,82 +106,96 @@ const BookedAppointments: React.FC<Props> = ({
             </Link>
           </div>
         ) : (
-          data?.map((booking) => (
-            <Card key={booking._id} className="py-6 w-full">
-              <CardContent className="flex items-center justify-between w-full">
-                <div className="flex gap-2 items-start">
-                  <User className="mt-4" />
-                  <div>
-                    <h2 className="font-bold text-xl capitalize">
-                      {booking.consultantId?.username}
-                    </h2>
-                    <p className="text-sm text-muted-foreground">
-                      {booking.consultantId?.email}
-                    </p>
-                    <p className="text-sm flex items-center gap-2 text-muted-foreground">
-                      <Calendar className="w-4 h-4" />
-                      {getCurrentDate(booking?.startTime)}
-                    </p>
-                    <p className="text-sm flex items-center gap-2 text-muted-foreground">
-                      <Clock className="w-4 h-4" />{" "}
-                      {formatDateInHours(booking?.startTime, true)} -
-                      {formatDateInHours(booking?.endTime, true)}
-                    </p>
+          data?.map((booking) => {
+            return (
+              <Card key={booking._id} className="py-6 w-full">
+                <CardContent className="flex items-center justify-between w-full">
+                  <div className="flex gap-2 items-start">
+                    <User className="mt-4" />
+                    <div>
+                      <h2 className="font-bold text-xl capitalize">
+                        {booking.consultantId?.username}
+                      </h2>
+                      <p className="text-sm text-muted-foreground">
+                        {booking.consultantId?.email}
+                      </p>
+                      <p className="text-sm flex items-center gap-2 text-muted-foreground">
+                        <Calendar className="w-4 h-4" />
+                        {getCurrentDate(booking?.startTime)}
+                      </p>
+                      <p className="text-sm flex items-center gap-2 text-muted-foreground">
+                        <Clock className="w-4 h-4" />{" "}
+                        {formatDateInHours(booking?.startTime, true)} -
+                        {formatDateInHours(booking?.endTime, true)}
+                      </p>
+                    </div>
                   </div>
-                </div>
-                <div className="space-y-2">
-                  <GetBookingStatus
-                    status={booking?.status?.toUpperCase() as BookingStatus}
-                  />
-                  <div className="flex items-center gap-2">
-                    {booking?.status.toUpperCase() === "SCHEDULED" && (
-                      <Button
-                        onClick={() => handleCancelBooking(booking?._id)}
-                        variant={"destructive"}
-                      >
-                        {loading && currentBookingid == booking?._id ? (
-                          <Loader2 className="animate-spin" />
-                        ) : (
-                          <X />
-                        )}{" "}
-                        Cancel
-                      </Button>
-                    )}
-                    <Dialog
-                      open={dialogId === booking?._id}
-                      onOpenChange={(isOpen) =>
-                        setDialogId(isOpen ? `${booking?._id}` : null)
-                      }
-                      key={booking?._id}
-                    >
-                      <DialogTrigger asChild>
+                  <div className="space-y-2">
+                    <GetBookingStatus
+                      status={booking?.status?.toUpperCase() as BookingStatus}
+                    />
+                    <div className="flex items-center gap-2">
+                      {booking?.status.toUpperCase() === "SCHEDULED" && (
                         <Button
-                          onClick={() => setDialogId(booking?._id)}
-                          className="py-1"
-                          variant={"outline"}
+                          onClick={() => handleCancelBooking(booking?._id)}
+                          variant={"destructive"}
+                          disabled={
+                            cancelLoading && currentBookingid == booking?._id
+                          }
                         >
-                          View Details
-                        </Button>
-                      </DialogTrigger>
-                      <DialogContent className="md:w-[780px]">
-                        <DialogTitle>Appointment Details</DialogTitle>
-                        <Button
-                          onClick={() => handleJoinAppointment(booking?._id)}
-                          disabled={joinAppointmentLoading}
-                        >
-                          {joinAppointmentLoading ? (
+                          {cancelLoading && currentBookingid == booking?._id ? (
                             <Loader2 className="animate-spin" />
                           ) : (
-                            "Join Meeting"
-                          )}
+                            <X />
+                          )}{" "}
+                          Cancel
                         </Button>
-                      </DialogContent>
-                    </Dialog>
+                      )}
+                      <Dialog
+                        open={dialogId === booking?._id}
+                        onOpenChange={(isOpen) =>
+                          setDialogId(isOpen ? `${booking?._id}` : null)
+                        }
+                        key={booking?._id}
+                      >
+                        <DialogTrigger asChild>
+                          <Button
+                            onClick={() => setDialogId(booking?._id)}
+                            className="py-1"
+                            variant={"outline"}
+                          >
+                            View Details
+                          </Button>
+                        </DialogTrigger>
+                        <DialogContent className="md:w-[780px]">
+                          <DialogTitle>Appointment Details</DialogTitle>
+                          {booking?.status?.toUpperCase() !== "CANCELLED" && (
+                            // isBefore(
+                            //   new Date(Date.now()),
+                            //   addMinutes(new Date(booking?.startTime), 5)
+                            // ) &&
+                            // isBefore(new Date(Date.now()), booking?.endTime) &&
+                            <Button
+                              onClick={() =>
+                                handleJoinAppointment(booking?._id)
+                              }
+                              disabled={joinAppointmentLoading}
+                            >
+                              {joinAppointmentLoading ? (
+                                <Loader2 className="animate-spin" />
+                              ) : (
+                                "Join Meeting"
+                              )}
+                            </Button>
+                          )}
+                        </DialogContent>
+                      </Dialog>
+                    </div>
                   </div>
-                </div>
-              </CardContent>
-            </Card>
-          ))
+                </CardContent>
+              </Card>
+            );
+          })
         )}
       </CardContent>
       <CardFooter>

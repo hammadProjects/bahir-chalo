@@ -24,22 +24,7 @@ export const loginUserAction = async (
       withCredentials: true,
     });
 
-    console.log("data from auth.ts", res.data);
-
-    const token = res.data?.token;
-    if (!token)
-      return {
-        success: false,
-        message: "Please Login TO Continue",
-        url: "/sign-in",
-      };
-
-    (await cookies()).set("token", token as string, {
-      httpOnly: true,
-      sameSite: "strict",
-      secure: true,
-      maxAge: 60 * 60 * 24 * 7,
-    });
+    console.log(res.headers);
 
     let url =
       res.data?.user?.role === "unassigned"
@@ -52,8 +37,6 @@ export const loginUserAction = async (
       url,
     };
   } catch (error) {
-    // (todo) - change error type here
-    console.log(generateError(error));
     return {
       success: false,
       message: generateError(error),
@@ -135,21 +118,12 @@ export const verifyOtpAction = async (
 
     const res = await api.post("/auth/otp/verify", payload);
 
-    // set token as cookie - send token as response from backend
-    cookieStore.set("token", res.data?.token as string, {
-      httpOnly: true,
-      sameSite: "strict",
-      secure: true,
-      maxAge: 60 * 60 * 24 * 7,
-    });
-
     return {
       success: true,
       message: res.data?.message,
       url: "/onboarding",
     };
   } catch (error: any) {
-    console.log(error);
     return {
       success: false,
       message: error?.response?.data?.message || "Something Went Wrong",
@@ -171,10 +145,8 @@ export const otpResendAction = async (prevState: unknown) => {
     const payload = { email };
 
     const res = await api.post("/auth/otp/resend", payload);
-    console.log(res.data);
     return res.data;
   } catch (error: any) {
-    console.log(error.response);
     return {
       success: false,
       message: error?.response?.data?.message || "Something Went Wrong",
@@ -192,7 +164,7 @@ export const forgetPasswordAction = async (
 
     (await cookies()).set("email", `${email}`);
 
-    await api.post("/auth/forget-password", { email });
+    await api.post("/auth/password/forgot", { email });
 
     return {
       success: true,
@@ -227,7 +199,7 @@ export const resetPasswordAction = async (
       password,
     };
 
-    await api.post(`/auth/reset-password/${resetPasswordId}`, payload);
+    await api.post(`/auth/password/reset${resetPasswordId}`, payload);
 
     return {
       success: true,
@@ -235,7 +207,6 @@ export const resetPasswordAction = async (
       url: "/sign-in",
     };
   } catch (error) {
-    console.log(error);
     return {
       success: false,
       message: generateError(error),

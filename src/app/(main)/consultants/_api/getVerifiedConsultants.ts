@@ -1,32 +1,34 @@
 "use server";
-
-import { generateError } from "@/lib/utils";
 import api from "@/services/api";
-import { Consultant } from "@/types/types";
 
-export const getVerifiedConsultants = async () => {
+export const getVerifiedConsultants = async (page: number) => {
   try {
-    const data = await api.get("/consultant", {
+    const limit = 5;
+    const data = await api.get(`/consultants?page=${page}&limit=${limit}`, {
       withCredentials: true,
     });
 
-    return data.data?.data?.consultants as Consultant[];
+    return data.data?.data?.pagination;
   } catch (error) {
-    console.log(generateError(error));
     return [];
   }
 };
 
-export const searchVerifiedConsultants = async (searchQuery: string) => {
+export const searchVerifiedConsultants = async (
+  searchQuery: string,
+  page: number
+) => {
   try {
-    console.log("did this endpoint got hit huh", searchQuery);
-    const data = await api.get(`/consultant/search?search=${searchQuery}`, {
-      withCredentials: true,
-    });
+    const limit = 5;
+    const data = await api.get(
+      `/consultants?page=${page}&limit=${limit}&search=${searchQuery}`,
+      {
+        withCredentials: true,
+      }
+    );
 
-    return data.data?.data?.consultants as Consultant[];
+    return data.data?.data?.pagination;
   } catch (error) {
-    console.log(generateError(error));
     return [];
   }
 };

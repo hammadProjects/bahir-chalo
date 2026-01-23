@@ -7,7 +7,7 @@ export const getAvailableTimeSlots = async (id: string) => {
   try {
     if (!id) return { success: false, message: "consultantId is required" };
 
-    const res = await api.get(`/availability/${id}/slots`, {
+    const res = await api.get(`/availabilities/${id}/slots`, {
       headers: {
         Authorization: `Bearer ${(await cookies()).get("token")?.value}`,
       },

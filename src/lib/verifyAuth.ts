@@ -1,13 +1,18 @@
 import api from "@/services/api";
+import { generateError } from "./utils";
 import { cookies } from "next/headers";
 
 export const verifyAuth = async () => {
-  const token = (await cookies()).get("token")?.value;
   try {
     const res = await api.put(
-      "/auth/validate-token",
+      "/auth/token/validate",
       {},
-      { withCredentials: true, headers: { Authorization: `Bearer ${token}` } }
+      {
+        headers: {
+          Authorization: `Bearer ${(await cookies()).get("token")?.value}`,
+        },
+        withCredentials: true,
+      }
     );
 
     return {
@@ -16,14 +21,6 @@ export const verifyAuth = async () => {
       user: res.data?.user,
     };
   } catch (error) {
-    // if error just return false
-    let message = "Something Went Wrong";
-
-    if (error && typeof error === "object" && "response" in error) {
-      const err = error as { response?: { data?: { message?: string } } };
-      message = err.response?.data?.message || message;
-    }
-
-    return { success: false, message };
+    return { success: false, message: generateError(error) };
   }
 };

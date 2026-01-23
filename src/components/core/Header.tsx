@@ -7,6 +7,7 @@ import { headers } from "next/headers";
 import { publicRoutes } from "@/lib/data";
 import { LogOut } from "lucide-react";
 import { logutAction } from "../../../actions/auth";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
 const Header = async () => {
   const { success, role, user } = await verifyAuth();
@@ -54,7 +55,7 @@ const Header = async () => {
           >
             <Link href={"/#pricing"}>Pricing</Link>
           </Button>
-          <div className="flex items-center ">
+          <div className="flex items-center">
             <Button
               variant={"link"}
               className=" hover:text-emerald-700/80"
@@ -62,8 +63,20 @@ const Header = async () => {
             >
               <Link href={dashboardUrl}>{btnText}</Link>
             </Button>
+
+            {success && (
+              <Link href={"/profile"}>
+                <Avatar>
+                  <AvatarImage src={user?.profilePicture} />
+                  <AvatarFallback>
+                    {user?.username[0].toUpperCase()}
+                  </AvatarFallback>
+                </Avatar>
+              </Link>
+            )}
+
             {success && (role === "student" || role === "consultant") && (
-              <p className="hidden sm:block text-sm font-bold border-1 border-emerald-400 py-1 px-2 rounded-sm hover:scale-105 transition-all cursor-pointer">
+              <p className="ml-3 hidden sm:block text-sm font-bold border-1 border-emerald-400 py-1 px-2 rounded-sm hover:scale-105 transition-all cursor-pointer">
                 🪙 {user?.credits} Credits
               </p>
             )}

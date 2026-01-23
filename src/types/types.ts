@@ -45,6 +45,7 @@ export interface UserSchema {
   otpVerified: boolean;
   role: "student" | "consultant" | "admin" | "unassigned";
   credits: number;
+  profilePicture: string;
 
   createdAt: Date;
   updatedAt: Date;
@@ -97,7 +98,7 @@ export interface OnboardingResponse {
 
 export interface UseFetchData {
   success: boolean;
-  message: string;
+  message?: string;
   url?: string;
   hideResponse?: boolean;
 }

@@ -39,7 +39,7 @@ export const config: MiddlewareConfig = {
     "/consultant/:paths*",
     "/admin/:paths*",
     "/student/:paths*",
-    "/consultants/:paths*",
+    // "/consultants/:paths*",
     "/onboarding",
     "/verification",
   ],

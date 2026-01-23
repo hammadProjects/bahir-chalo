@@ -14,7 +14,6 @@ export async function getAllConsultants() {
 
     return response.data.data.consultants;
   } catch (error) {
-    console.log(error);
     return [];
   }
 }
@@ -30,7 +29,6 @@ export async function getPendingConsultants() {
 
     return response.data.data.consultants;
   } catch (error) {
-    console.log(error);
     return [];
   }
 }

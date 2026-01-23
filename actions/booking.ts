@@ -27,7 +27,7 @@ export const BookAppointment = async (formData: FormData) => {
       availabilityId,
     };
 
-    const res = await api.post(`/booking/${availabilityId}`, payload, {
+    const res = await api.post(`/bookings/${availabilityId}`, payload, {
       withCredentials: true,
       headers: { Authorization: `Bearer ${token}` },
     });
@@ -38,7 +38,6 @@ export const BookAppointment = async (formData: FormData) => {
       credits: res.data?.remainingCredits,
     };
   } catch (error: any) {
-    console.log(error?.response);
     return { success: false, message: generateError(error) };
   }
 };
@@ -51,16 +50,12 @@ export const getBookings = async (formData: FormData) => {
     const pageNum = formData.get("page");
     const limit = 5;
 
-    const res = await api.get(`/booking/mine?page=${pageNum}&limit=${limit}`, {
+    const res = await api.get(`/bookings/mine?page=${pageNum}&limit=${limit}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
 
-    console.log("bookings", res.data?.pagination);
-
     return res.data?.pagination as PaginationSchema;
-  } catch (error) {
-    console.log(error);
-  }
+  } catch (error) {}
 };
 
 export const cancelBookingAction = async (formData: FormData) => {
@@ -78,7 +73,7 @@ export const cancelBookingAction = async (formData: FormData) => {
 
     const token = (await cookies()).get("token")?.value;
 
-    await api.delete(`/booking/${bookingId}`, {
+    await api.delete(`/bookings/${bookingId}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
 
@@ -93,12 +88,12 @@ export const joinAppointment = async (formData: FormData) => {
   try {
     const bookingId = formData.get("bookingId");
     if (!bookingId)
-      return { success: false, message: "Booking ID and Role are required" };
+      return { success: false, message: "Booking ID is required" };
 
     const token = (await cookies()).get("token")?.value;
     if (!token) return { success: false, message: "Unauthorized" };
     const response = await api.post(
-      `/booking/join/${bookingId}`,
+      `/bookings/join/${bookingId}`,
       {},
       { headers: { Authorization: `Bearer ${token}` } }
     );
@@ -108,6 +103,29 @@ export const joinAppointment = async (formData: FormData) => {
       message: "Meeting will be joined shortly",
       url: `http://localhost:3000/meeting/${response?.data?.data?.token}`,
     };
+  } catch (error) {
+    return { success: false, message: generateError(error) };
+  }
+};
+
+export const completeBooking = async (formData: FormData) => {
+  try {
+    const bookingId = formData.get("bookingId");
+    if (!bookingId)
+      return { success: false, message: "Booking ID Role are required" };
+
+    await api.put(
+      `/bookings/${bookingId}`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${(await cookies()).get("token")?.value}`,
+        },
+        withCredentials: true,
+      }
+    );
+
+    return { success: true, message: "Appointment has been marked completed" };
   } catch (error) {
     return { success: false, message: generateError(error) };
   }

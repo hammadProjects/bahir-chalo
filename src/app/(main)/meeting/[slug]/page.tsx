@@ -1,96 +1,152 @@
 "use client";
 import { useEffect, useState } from "react";
-import { useRealtimeKitClient } from "@cloudflare/realtimekit-react";
+import {
+  RealtimeKitProvider,
+  useRealtimeKitClient,
+} from "@cloudflare/realtimekit-react";
 import { useParams } from "next/navigation";
 import {
+  RtkAiToggle,
+  RtkCameraSelector,
+  RtkControlbar,
+  RtkDialogManager,
+  RtkEndedScreen,
   RtkGrid,
-  RtkGridPagination,
-  RtkMeeting,
-  RtkParticipantCount,
+  RtkHeader,
+  RtkMeetingTitle,
+  RtkNotifications,
   RtkParticipants,
-  RtkSimpleGrid,
+  RtkParticipantsAudio,
+  RtkSetupScreen,
+  RtkSidebar,
+  RtkSpotlightGrid,
+  RtkStage,
+  RtkUiProvider,
+  RtkWaitingScreen,
+  States,
 } from "@cloudflare/realtimekit-react-ui";
-import { generateError } from "@/lib/utils";
 
 const MeetingPage = () => {
   const { slug: token } = useParams<{ slug: string }>();
   const [meeting, initMeeting] = useRealtimeKitClient();
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [currentState, setCurrentState] = useState("idle");
+  const [showSidebar, setShowSidebar] = useState(false);
 
   useEffect(() => {
-    const joinMeeting = async () => {
-      try {
-        setIsLoading(true);
+    initMeeting({
+      authToken: token,
+      defaults: { audio: true, video: true },
+    });
+  }, []);
 
-        // Initialize meeting first
-        const meet = await initMeeting({
-          authToken: decodeURIComponent(token),
-          defaults: {
-            audio: true,
-            video: true,
-          },
-        });
+  const renderSetupScreen = () => {
+    return <RtkSetupScreen />;
+  };
 
-        if (!meet) {
-          throw new Error("Failed to initialize meeting");
-        }
+  const renderWaitingScreen = () => {
+    return <RtkWaitingScreen />;
+  };
 
-        // // Wait for initialization then join
-        // await meet?.join();
-        // await meet?.self?.enableAudio();
-        // await meet?.self?.enableVideo();
+  const renderEndedScreen = () => {
+    return <RtkEndedScreen />;
+  };
 
-        setIsLoading(false);
-      } catch (err) {
-        console.error("Meeting join error:", err);
-        setError(generateError(error));
-        setIsLoading(false);
-      }
-    };
-
-    if (token && !meeting) {
-      joinMeeting();
-    }
-
-    // Cleanup on unmount
-    return () => {
-      if (meeting) {
-        meeting.leave();
-      }
-    };
-  }, [token, initMeeting]);
-
-  if (isLoading) {
+  const loading = () => {
     return (
-      <div className="flex items-center justify-center h-screen">
+      <div className="flex items-center justify-center min-h-[calc(100vh-100px)]">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4" />
           <p>Joining meeting...</p>
         </div>
       </div>
     );
-  }
+  };
 
-  if (error && !isLoading) {
+  const renderJoinedScreen = () => {
     return (
-      <div className="flex items-center justify-center h-screen">
-        <div className="bg-red-900/30 border border-red-600 rounded-lg p-6 max-w-md">
-          <h2 className="text-xl font-bold mb-2">Failed to Join</h2>
-          <p className="text-gray-300">{error}</p>
-        </div>
-      </div>
+      <>
+        <RtkHeader
+          style={{ display: "flex", justifyContent: "space-between" }}
+        />
+        <RtkStage style={{ flex: 1, flexGrow: 1, flexShrink: 1 }}>
+          <RtkGrid />
+          <RtkSidebar
+            style={{
+              position: "fixed",
+              top: "0px",
+              display: showSidebar ? "block" : "none",
+            }}
+          />
+        </RtkStage>
+        <RtkControlbar
+          style={{ display: "flex", justifyContent: "space-between" }}
+        />
+      </>
     );
-  }
+  };
+
+  const handleStatesUpdate = (event: { detail: States }) => {
+    const meetingState = event.detail.meeting;
+    const states = event.detail;
+
+    // Store states to update your custom UI
+    if (meetingState === "idle" && currentState !== "idle") {
+      setCurrentState("idle");
+    } else if (meetingState === "setup" && currentState !== "setup") {
+      setCurrentState("setup");
+    } else if (meetingState === "waiting" && currentState !== "waiting") {
+      setCurrentState("waiting");
+    } else if (meetingState === "joined" && currentState !== "joined") {
+      setCurrentState("joined");
+    } else if (meetingState === "ended" && currentState !== "ended") {
+      setCurrentState("ended");
+    }
+
+    // Update sidebar visibility based on state
+    if (states.activeSidebar !== undefined) {
+      setShowSidebar(states.activeSidebar);
+    }
+  };
 
   return (
-    <div className="h-screen flex flex-col">
-      <RtkMeeting showSetupScreen={true} mode="fill" meeting={meeting} />
-      <div className="absolute top-4 right-4 z-10">
-        <RtkParticipants meeting={meeting} />
-        <RtkParticipantCount meeting={meeting} />
-        <RtkGridPagination meeting={meeting} />
-      </div>
+    <div>
+      <RealtimeKitProvider value={meeting}>
+        <RtkUiProvider
+          meeting={meeting}
+          showSetupScreen={true}
+          onRtkStatesUpdate={handleStatesUpdate}
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            margin: 0,
+            height: "100vh",
+          }}
+        >
+          <div
+            id="meeting-container"
+            style={
+              {
+                // display: "flex",
+                // flexDirection: "column",
+                // flex: 1,
+                // flexGrow: 1,
+                // flexShrink: 1,
+              }
+            }
+          >
+            {currentState === "idle" && loading()}
+            {currentState === "setup" && renderSetupScreen()}
+            {currentState === "waiting" && renderWaitingScreen()}
+            {currentState === "joined" && renderJoinedScreen()}
+            {currentState === "ended" && renderEndedScreen()}
+          </div>
+          <RtkParticipantsAudio meeting={meeting} />
+          <RtkDialogManager meeting={meeting} />
+          <RtkNotifications meeting={meeting} />
+          <RtkAiToggle meeting={meeting} />
+          <RtkMeetingTitle meeting={meeting} />
+        </RtkUiProvider>
+      </RealtimeKitProvider>
     </div>
   );
 };

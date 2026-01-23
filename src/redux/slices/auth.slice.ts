@@ -55,14 +55,12 @@ const authSlice = createSlice({
         toast.success("Account Created Successfully", {
           richColors: true,
         });
-        console.log(action.payload);
         const email = action.payload.message.split(" ").at(-1);
         state.email = email;
         localStorage.setItem("email", email);
       })
       .addCase(registerUserThunk.rejected, (state, action) => {
         state.loading = false;
-        console.log(action.payload);
         state.error = action.payload as string;
         toast.error(`${action.payload}`, { richColors: true });
       });
@@ -80,7 +78,6 @@ const authSlice = createSlice({
       })
       .addCase(verifyOtpThunk.rejected, (state, action) => {
         state.loading = false;
-        console.log(action.payload);
         state.error = action.payload as string;
         toast.error(`${action.payload}`, { richColors: true });
       });
@@ -98,7 +95,6 @@ const authSlice = createSlice({
       })
       .addCase(forgetPasswordThunk.rejected, (state, action) => {
         state.loading = false;
-        console.log(action.payload);
         state.error = action.payload as string;
         toast.error(`${action.payload}`, { richColors: true });
       });

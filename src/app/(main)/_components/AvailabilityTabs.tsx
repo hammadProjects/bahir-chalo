@@ -37,7 +37,7 @@ const AvailabilityTabs: React.FC<Props> = ({
   }, [data]);
 
   return dates.length === 0 ? (
-    <>No Availabilities are available</>
+    <>No Slots are Available</>
   ) : (
     <Tabs className="gap-2" defaultValue={dates[0]}>
       <TabsList className="w-full mb-4">

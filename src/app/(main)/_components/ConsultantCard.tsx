@@ -1,3 +1,4 @@
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -15,9 +16,10 @@ const ConsultantCard: React.FC<Props> = ({ data }) => {
   return (
     <Card className="bg-muted/6 border-emerald-600/20 hover:border-emerald-600/60 hover:scale-101 transition-all">
       <CardContent className="flex gap-3 lg:gap-6">
-        <div className="capitalize text-2xl font-bold flex items-center justify-center bg-rose-300 rounded-full h-10 w-10 lg:h-12 lg:w-12">
-          {data?.username[0]}
-        </div>
+        <Avatar className="h-10 w-10 lg:h-12 lg:w-12">
+          <AvatarImage src={data?.profilePicture} />
+          <AvatarFallback>{data?.username[0].toUpperCase()}</AvatarFallback>
+        </Avatar>
         <div className="flex-1">
           <div className="flex justify-between mb-2">
             <h2 className="text-lg font-semibold capitalize">
