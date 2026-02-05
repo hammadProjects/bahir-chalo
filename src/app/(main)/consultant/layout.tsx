@@ -22,8 +22,6 @@ const ConsultantDashboardLayout: React.FC<Props> = ({ children }) => {
           <span>Consultant Dashboard</span>
         </h1>
         <Tabs
-          //   defaultValue="earnings"
-          // defaultValue="bookings"
           defaultValue="availability"
           className="flex flex-col md:flex-row gap-8"
         >
